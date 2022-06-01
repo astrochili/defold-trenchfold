@@ -1,0 +1,62 @@
+function init(self)
+  self.sky_color = vmath.vector4(0.2, 0.1, 0.1, 1)
+
+  self.scene = {
+    predicate = render.predicate({ 'model' }),
+    view = vmath.matrix4(),
+    projection = vmath.matrix4()
+  }
+
+  self.gui = {
+    predicate = render.predicate({ 'gui' }),
+    view = vmath.matrix4()
+  }
+
+  self.text = {
+    predicate = render.predicate({ 'text' })
+  }
+end
+
+function update(self)
+  self.window = {
+    width = render.get_window_width(),
+    height = render.get_window_height()
+  }
+
+  local clear_options = {
+    [render.BUFFER_COLOR_BIT] = self.sky_color,
+    [render.BUFFER_DEPTH_BIT] = 1,
+    [render.BUFFER_STENCIL_BIT] = 0
+  }
+  
+  render.clear(clear_options)
+  render.set_viewport(0, 0, self.window.width, self.window.height)
+
+  -- scene
+  render.set_view(self.scene.view)
+  render.set_projection(self.scene.projection)
+  render.enable_state(render.STATE_BLEND)
+  render.enable_state(render.STATE_CULL_FACE)
+  render.enable_state(render.STATE_DEPTH_TEST)
+  render.set_depth_mask(true)
+  render.draw(self.scene.predicate)
+
+  -- debug
+  render.disable_state(render.STATE_DEPTH_TEST)
+  render.disable_state(render.STATE_CULL_FACE)    
+  render.draw_debug3d()
+
+  -- gui
+  render.set_view(self.gui.view)
+  render.set_projection(vmath.matrix4_orthographic(0, self.window.width, 0, self.window.height, -1, 1))
+  render.enable_state(render.STATE_STENCIL_TEST)
+  render.draw(self.gui.predicate)
+  render.draw(self.text.predicate)
+end
+
+function on_message(self, message_id, message)
+  if message_id == hash 'set_view_projection' then
+    self.scene.view = message.view
+    self.scene.projection = message.projection
+  end
+end

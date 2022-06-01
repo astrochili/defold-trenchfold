@@ -1,0 +1,31 @@
+--
+-- Local
+
+local function open_door(self)
+  go.animate(self.door, 'position', go.PLAYBACK_ONCE_FORWARD, self.opened_position, go.EASING_INOUTSINE, 0.25, 0)
+end
+
+local function close_door(self)
+  go.animate(self.door, 'position', go.PLAYBACK_ONCE_FORWARD, self.closed_position, go.EASING_INOUTSINE, 0.25, 0)      
+end
+
+--
+-- Lifecycle
+
+function init(self)
+  self.door = go.get('#properties', 'door_url')
+  local door_direction = go.get('#properties', 'door_direction')
+
+  self.closed_position = go.get_position(self.door)
+  self.opened_position = self.closed_position + door_direction
+end
+
+function on_message(self, message_id, message, sender)
+  if message_id == hash 'trigger_response' then
+    if message.enter then
+      open_door(self)
+    else
+      close_door(self)
+    end
+  end
+end

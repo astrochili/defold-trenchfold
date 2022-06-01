@@ -1,0 +1,7 @@
+--
+-- Lifecycle
+
+function init(self)
+  go.set('.', 'euler.x', 0.05)
+  go.animate('.', 'euler.x', go.PLAYBACK_LOOP_PINGPONG, -0.05, go.EASING_INOUTQUAD, 1)
+end

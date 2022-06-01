@@ -1,0 +1,70 @@
+@BaseClass = id [
+	id(string) : "The unique gameobject identifier. If it's empty the common identifier with '_n' will be used." : "<unique Identifier>"
+]
+
+@BaseClass = components [
+	#component_id(string): "" : "/path_to/component.file"
+]
+
+@BaseClass = material [
+	material(string) : "Path to the material that will be set in mesh components." : "/builtins/materials/model.material"
+]
+
+@BaseClass = physics_contact [
+	physics_friction(float) : "Friction" : "0.1"
+	physics_restitution(float) : "Restitution" : "0.5"
+]
+
+@BaseClass = physics_filters [
+	physics_group(string) : "Collision group that will be set in collision objects." : "default"
+	physics_mask(string) : "Collision mask that will be set in collision objects." : "default"
+]
+
+@BaseClass base(physics_contact, physics_filters) = physics [
+]
+
+@SolidClass base(physics, material) = worldspawn [
+	textel_size(float) : "How much Trenchbroom grid units are equal to 1 unit in Defold." : "1"
+]
+
+@SolidClass base(id, components, material, physics) = static [
+]
+
+@SolidClass base(id, components, physics_filters) = trigger [
+]
+
+@SolidClass base(id, components, material, physics_filters) = kinematic [
+]
+
+@SolidClass base(id, components, material, physics) = dynamic [
+	physics_mass(float) : "Mass" : "1.0"
+	physics_linear_damping(float) : "Linear damping" : "0.0"
+	physics_angular_damping(float) : "Angular damping" : "0.0"
+	physics_flags(flags) = [
+		1: "Locked rotation" : 0
+		2: "Bullet" : 0
+	]
+]
+
+@PointClass base(id, components) size(-4 -4 -4, 4 4 4) color(127 127 255) = go [
+	go(string): "Your gameobject file path. Any #component_id will be ignored after that." : "/path_to/gameobject.go"
+]
+
+@PointClass base(id) size(-4 -4 -4, 4 4 4) color(255 255 0) = light [
+	#light(string): "The light script" : "/illumination/light.script"
+	light_color(color): "The color" : "1.0 1.0 1.0"
+	brigtness(float): "The brightness" : "0.7"
+	intensity(float): "The intensity" : "0.5"
+	range(float): "The radius of lighting" : "5"
+	animation(choices) : "The animation of lighting" : 0 = [
+		0: "Static"
+		2: "Strobe"
+		3: "Flashing"
+		4: "Random"
+	]
+	flags(flags) = [
+		1: "Flag 1" : 0
+		2: "Flag 2" : 0
+		4: "Flag 3" : 0
+	]
+]

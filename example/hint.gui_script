@@ -1,0 +1,15 @@
+--
+-- Lifecycle
+
+function init(self)
+  msg.post('.', hash 'acquire_input_focus')
+  self.root_node = gui.get_node('box')
+  self.is_enabled = true
+end
+
+function on_input(self, action_id, action)
+  if action_id == hash 'key_h' and action.released then
+    self.is_enabled = not self.is_enabled
+    gui.set_enabled(self.root_node, self.is_enabled)
+  end
+end

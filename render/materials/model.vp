@@ -1,0 +1,20 @@
+attribute highp vec4 position;
+attribute mediump vec3 normal;
+attribute mediump vec2 texcoord0;
+
+uniform mediump mat4 mtx_worldview;
+uniform mediump mat4 mtx_view;
+uniform mediump mat4 mtx_proj;
+uniform mediump mat4 mtx_normal;
+
+varying highp vec4 var_position;
+varying mediump vec3 var_normal;
+varying mediump vec2 var_texcoord0;
+
+void main() {
+    var_position = mtx_worldview * vec4(position.xyz, 1.0);
+    var_texcoord0 = texcoord0;
+    var_normal = normal;
+    
+    gl_Position = mtx_proj * var_position;
+}

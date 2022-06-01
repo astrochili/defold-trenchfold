@@ -1,0 +1,30 @@
+[library]
+include_dirs = trenchbroom
+
+[project]
+title = TrenchBroom
+dependencies#0 = https://github.com/indiesoftby/defold-pointer-lock/archive/1b5e05b94491bb7e041052990122dd846e1605a9.zip
+dependencies#1 = https://github.com/astrochili/defold-operator/archive/refs/tags/1.2.zip
+dependencies#2 = https://github.com/astrochili/defold-kinematic-walker/archive/refs/tags/1.0.zip
+
+[bootstrap]
+main_collection = /example/main.collectionc
+render = /render/example.renderc
+
+[input]
+game_binding = /builtins/input/all.input_bindingc
+
+[physics]
+type = 3D
+
+[resource]
+max_resources = 2048
+
+[html5]
+scale_mode = stretch
+show_made_with_defold = 0
+show_fullscreen_button = 0
+
+[display]
+high_dpi = 1
+

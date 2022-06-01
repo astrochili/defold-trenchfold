@@ -1,0 +1,35 @@
+--
+-- Local
+
+local spectator_mode = false
+local urls = { }
+
+local function handle_window_event(self, event, data)
+  if event == window.WINDOW_EVENT_FOCUS_LOST then
+    msg.post(urls.walker, hash 'pause', { is_paused = true })
+  elseif event == window.WINDOW_EVENT_FOCUS_GAINED then
+    msg.post(urls.walker, hash 'pause', { is_paused = false })
+  end
+end
+
+--
+-- Lifecycle
+
+function init(self)
+  urls.eyes = msg.url('eyes')
+  urls.operator = msg.url('operator/operator')
+  urls.walker = msg.url('#walker')
+
+  msg.post('.', hash 'acquire_input_focus')
+  msg.post(urls.operator, hash 'follow_point', { object = urls.eyes })
+  msg.post(urls.walker, hash 'follow_camera', { camera = urls.operator })
+  
+  window.set_listener(handle_window_event)
+end
+
+function on_input(self, action_id, action)
+  if action_id == hash 'key_f' and action.released then
+    spectator_mode = not spectator_mode
+    msg.post(urls.walker, hash 'spectator_mode', { is_enabled = spectator_mode } )
+  end
+end

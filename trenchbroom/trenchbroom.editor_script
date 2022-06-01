@@ -1,0 +1,100 @@
+--[[
+  trenchbroom.editor_script
+  github.com/astrochili/defold-trenchbroom
+
+  Copyright (c) 2022 Roman Silin
+  MIT license. See LICENSE for details.
+--]]
+
+local config = require 'trenchbroom.config'
+local trenchbroom = require 'trenchbroom.trenchbroom'
+
+local editor_script = { }
+
+local platforms = {
+  windows = 'x86_64-win32',
+  macos = 'x86_64-darwin',
+  linux = 'x86_64-linux'
+}
+
+local function is_command_active(options)
+  local path = editor.get(options.selection, 'path')
+  local is_map = path:sub(-4) == '.map'
+  return is_map
+end
+
+local function make_clean_up_action(path)
+  local script = ''
+  script = script .. 'if [ -d "' .. path .. '" ]; '
+  script = script .. 'then rm -r "' .. path .. '"; '
+  script = script .. 'fi; '
+  script = script .. 'mkdir ' .. '"' .. path .. '"'
+
+  print('Clean up \'' .. path .. '\'')
+
+  return {
+    action = 'shell',
+    command = { 'sh', '-c', script }
+  }
+end
+
+local function init_config(options)
+  local map_path = editor.get(options.selection, 'path')
+  local folder_separator = editor.platform == platforms.windows and '\\' or '/'
+  local map_directory = map_path:match('(.*)' .. folder_separator)
+  map_directory = map_directory:sub(2)
+  local map_name = map_path:match('.+' .. folder_separator .. '(.+)%.map')
+
+  config.init(folder_separator, map_directory, map_name)
+end
+
+local function clean_up_component_folders(options)
+  init_config(options)
+
+  print('')
+  print('# Cleaning up')
+  
+  local actions = {
+    make_clean_up_action(config.buffer_directory),
+    make_clean_up_action(config.mesh_directory),
+    make_clean_up_action(config.convexshape_directory),
+    make_clean_up_action(config.collisionobject_directory),
+    make_clean_up_action(config.script_directory)
+  }
+
+  return actions
+end
+
+local function map_to_collection(options)
+  init_config(options)
+
+  print('')
+
+  trenchbroom.convert()
+end
+
+function editor_script.get_commands()
+  local preparing_command = {
+    label = 'Prepare Map Components Folders',
+    locations = { 'Assets' },
+    query = {
+      selection = { type = 'resource', cardinality = 'one' }
+    },
+    active = is_command_active,
+    run = clean_up_component_folders
+  }
+
+  local converting_command = {
+    label = 'Convert Map to Collection',
+    locations = { 'Assets' },
+    query = {
+      selection = { type = 'resource', cardinality = 'one' }
+    },
+    active = is_command_active,
+    run = map_to_collection
+  }
+
+  return { preparing_command, converting_command }
+end
+
+return editor_script
