@@ -1,10 +1,7 @@
-# TrenchBroom extension for Defold
+![logo](https://user-images.githubusercontent.com/4752473/179576684-bea03ccb-0b52-4346-819a-927e4d5d3c0e.jpg)
+[![buymeacoffee](https://user-images.githubusercontent.com/4752473/179627111-617b77b1-f900-4fac-9e03-df73994246ad.svg)](https://www.buymeacoffee.com/astrochili) [![yoomoney](https://user-images.githubusercontent.com/4752473/179627145-7b0fde31-9d1b-4050-933f-82ce3227c617.svg)](https://yoomoney.ru/to/410011261306506) [![twitter](https://user-images.githubusercontent.com/4752473/179627140-c8991473-c4c1-4d6a-9bb1-4dc2117b049f.svg)](https://twitter.com/astronachos) [![telegram](https://user-images.githubusercontent.com/4752473/179627134-0bdcf8a5-7826-4ed2-b8cd-06d0b9792422.svg)](https://t.me/astronachos)
 
-![](https://user-images.githubusercontent.com/4752473/179576684-bea03ccb-0b52-4346-819a-927e4d5d3c0e.jpg)
-[![buymeacoffee](https://user-images.githubusercontent.com/4752473/179627111-617b77b1-f900-4fac-9e03-df73994246ad.svg)](https://www.buymeacoffee.com/astrochili)
-[![yoomoney](https://user-images.githubusercontent.com/4752473/179627145-7b0fde31-9d1b-4050-933f-82ce3227c617.svg)](https://yoomoney.ru/to/410011261306506)
-[![twitter](https://user-images.githubusercontent.com/4752473/179627140-c8991473-c4c1-4d6a-9bb1-4dc2117b049f.svg)](https://twitter.com/astronachos)
-[![telegram](https://user-images.githubusercontent.com/4752473/179627134-0bdcf8a5-7826-4ed2-b8cd-06d0b9792422.svg)](https://t.me/astronachos)
+# TrenchBroom extension for Defold
 
 ## Overview
 
@@ -12,7 +9,7 @@ This is a kit of game configuration files and importing scripts to design your l
 
 TrenchBroom was originally created to design Quake-format levels, but thanks to its flexible game configurations it's suitable for any other game with low-polygon level geometry. It's cross-platform, has a great [manual](https://trenchbroom.github.io/manual/latest/) and usability.
 
-🎮 [Play HTML5 demo](https://astronachos.com/defold/trenchbroom) level made with [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack).
+🎮 [Play HTML5 demo](https://astronachos.com/defold/trenchbroom) level made with [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack), [Operator](https://github.com/astrochili/defold-operator) and [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker).
 
 💬 [Discuss on the forum](https://forum.defold.com/t/trenchbroom-extension-for-defold/71284).
 

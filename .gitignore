@@ -20,5 +20,3 @@ log.txt
 
 # TrenchBroom
 **/autosave/*.map
-*.mtl
-*.obj
