@@ -152,7 +152,7 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
     local area_convexshape
 
     for face_index, face in ipairs(brush) do
-      local physics = utils.shallow_copy(preferences.physics)
+      local physics = utils.shallow_copy(preferences.physics) or { }
       
       for property, value in pairs(go.physics or { }) do
         physics[property] = value

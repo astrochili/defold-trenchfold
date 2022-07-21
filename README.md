@@ -9,9 +9,15 @@ This is a kit of game configuration files and importing scripts to design your l
 
 TrenchBroom was originally created to design Quake-format levels, but thanks to its flexible game configurations it's suitable for any other game with low-polygon level geometry. It's cross-platform, has a great [manual](https://trenchbroom.github.io/manual/latest/) and usability.
 
-🎮 [Play HTML5 demo](https://astronachos.com/defold/trenchbroom) level made with [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack), [Operator](https://github.com/astrochili/defold-operator) and [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker).
+🎮 [Play HTML5 demo](https://astronachos.com/defold/trenchbroom).
 
 💬 [Discuss on the forum](https://forum.defold.com/t/trenchbroom-extension-for-defold/71284).
+
+🎥 Look at [Operator](https://github.com/astrochili/defold-operator) and [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker) used in the demo.
+
+🧪 Look at [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack) by [Little Martian](https://little-martian.dev/) used in the demo.
+
+🎁 Get [free blockout textures](https://github.com/astrochili/blockout-textures) to start prototyping.
 
 ## Features
 
@@ -32,6 +38,7 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 2. Copy the `trenchbroom/games/Defold` folder according [this instruction](https://trenchbroom.github.io/manual/latest/#game_configuration_files) to TrenchBroom user data folder.
 3. Place your texture packs at path `assets/textures` to use them in TrenchBroom.
 4. Set your game project path as the game path in TrenchBroom preferences when creating the first map.
+5. Setup `textel_size` and `material` in the [worldspawn](#worldspawn) entity.
 
 ## Export and Import
 

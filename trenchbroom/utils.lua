@@ -71,6 +71,10 @@ function utils.flags_from_integer(integer)
 end
 
 function utils.shallow_copy(orig)
+  if orig == nil then
+    return nil
+  end
+  
   local copy = { }
 
   for key, value in pairs(orig) do

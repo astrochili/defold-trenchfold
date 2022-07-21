@@ -184,6 +184,8 @@ function builder.build(map, obj, mtl)
     local entity_id
 
     if classname == 'worldspawn' then
+      entity.properties = entity.properties or { }
+      
       level.preferences.textel_size = entity.properties.textel_size
       level.preferences.material = entity.properties.material
       level.preferences.physics = entity.physics
@@ -195,8 +197,15 @@ function builder.build(map, obj, mtl)
       entity_id = classname
       group = section
     elseif classname == 'func_group' then
-      entity_id = map_entity._tb_name
+      entity_id = tostring(map_entity._tb_name)
       group = section
+
+      if group[entity_id] then
+        local group_index = tostring(map_entity._tb_id)
+        local safe_id = entity_id .. '_' .. group_index
+        print('[!] Looks like you have few groups with the same name \'' .. entity_id .. '\'. Renamed to ' .. '\'' .. safe_id .. '\'.')
+        entity_id = safe_id
+      end
     else
       section = level.entities
     end
@@ -210,6 +219,7 @@ function builder.build(map, obj, mtl)
 
     entity_id = entity_id or map_entity.id or (group_id .. '_' .. (#group + 1))
     entity.id = entity_id
+
     group[entity_id] = entity
   end
 
