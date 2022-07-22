@@ -217,7 +217,13 @@ function builder.build(map, obj, mtl)
       section[group_id] = group  
     end
 
-    entity_id = entity_id or map_entity.id or (group_id .. '_' .. (#group + 1))
+    entity_id = entity_id or map_entity.id
+
+    if not entity_id then
+      local group_count = utils.count(group)
+      entity_id = group_id .. '_' .. (group_count + 1)
+    end
+    
     entity.id = entity_id
 
     group[entity_id] = entity

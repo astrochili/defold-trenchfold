@@ -70,6 +70,16 @@ function utils.flags_from_integer(integer)
   return flags
 end
 
+function utils.count(dict)
+  local count = 0
+
+  for _ in pairs(dict) do
+    count = count + 1
+  end
+
+  return count
+end
+
 function utils.shallow_copy(orig)
   if orig == nil then
     return nil
