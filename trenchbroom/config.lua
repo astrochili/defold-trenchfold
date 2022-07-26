@@ -37,27 +37,27 @@ function config.init(folder_separator, map_directory, map_name)
   -- Paths
 
   config.assets_directory = 'assets'
-  config.buffer_directory = config.map_directory .. folder_separator .. 'buffer'
-  config.mesh_directory = config.map_directory .. folder_separator .. 'mesh'
-  config.collisionobject_directory = config.map_directory .. folder_separator .. 'collisionobject'
-  config.convexshape_directory = config.map_directory .. folder_separator .. 'convexshape'
-  config.script_directory = config.map_directory .. folder_separator .. 'script'
+  config.buffer_directory = config.map_directory .. '/buffer'
+  config.mesh_directory = config.map_directory .. '/mesh'
+  config.collisionobject_directory = config.map_directory .. '/collisionobject'
+  config.convexshape_directory = config.map_directory .. '/convexshape'
+  config.script_directory = config.map_directory .. '/script'
 end
 
 --
 -- Paths
 
 function config.full_path(directory, file_path)
-  return directory .. config.folder_separator .. file_path
+  local full_path = directory .. '/' .. file_path
+  full_path = full_path:gsub('/', config.folder_separator)
+  return full_path
 end
 
 function config.resource_path(directory_or_file_path, file_path)
   local path = directory_or_file_path
 
   if file_path then
-    path = directory_or_file_path .. config.folder_separator .. file_path
-  else
-    path = directory_or_file_path
+    path = path .. '/' .. file_path
   end
 
   local resource_path = '/' .. path:gsub(config.folder_separator, '/')

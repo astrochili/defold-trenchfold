@@ -28,7 +28,7 @@ end
 
 function trenchbroom.convert()
   print('# TrenchBroom to Defold')
-  print('Starting with map \'' .. config.map_directory .. config.folder_separator .. config.map_name .. '.map\'')
+  print('Starting with map \'' .. config.map_directory .. '/' .. config.map_name .. '.map\'')
 
   print('\n# Parsing')
   local file_path = config.full_path(config.map_directory, config.map_name)

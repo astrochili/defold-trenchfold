@@ -39,11 +39,11 @@ local function make_clean_up_action(path)
 end
 
 local function init_config(options)
-  local map_path = editor.get(options.selection, 'path')
   local folder_separator = editor.platform == platforms.windows and '\\' or '/'
-  local map_directory = map_path:match('(.*)' .. folder_separator)
-  map_directory = map_directory:sub(2)
-  local map_name = map_path:match('.+' .. folder_separator .. '(.+)%.map')
+
+  local map_path = editor.get(options.selection, 'path')
+  local map_directory = map_path:match('(.*)' .. '/'):sub(2)
+  local map_name = map_path:match('.+/(.+)%.map')
 
   config.init(folder_separator, map_directory, map_name)
 end
