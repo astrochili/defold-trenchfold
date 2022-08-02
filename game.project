@@ -3,7 +3,7 @@ include_dirs = trenchbroom
 
 [project]
 title = TrenchBroom
-version = 1.2
+version = 1.4
 dependencies#0 = https://github.com/indiesoftby/defold-pointer-lock/archive/1b5e05b94491bb7e041052990122dd846e1605a9.zip
 dependencies#1 = https://github.com/astrochili/defold-operator/archive/refs/tags/1.3.zip
 dependencies#2 = https://github.com/astrochili/defold-kinematic-walker/archive/refs/tags/1.0.zip
@@ -25,3 +25,4 @@ show_fullscreen_button = 0
 
 [display]
 high_dpi = 1
+
