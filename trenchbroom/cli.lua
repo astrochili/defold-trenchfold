@@ -23,8 +23,8 @@ local folder_to_clean = {
 
 print('\n# Cleaning up')
 for _, folder in ipairs(folder_to_clean) do
-  print('Clean up \'' .. folder .. '\'')
   utils.clear_folder(folder)
+  print('Cleaned up \'' .. folder .. '\'')
 end
 print('')
 

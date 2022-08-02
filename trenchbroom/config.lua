@@ -60,7 +60,7 @@ function config.resource_path(directory_or_file_path, file_path)
     path = path .. '/' .. file_path
   end
 
-  local resource_path = '/' .. path:gsub(config.folder_separator, '/')
+  local resource_path = '/' .. path:gsub('\\', '/')
   return resource_path
 end
 

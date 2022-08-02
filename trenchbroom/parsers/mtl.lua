@@ -28,7 +28,7 @@ function parser.parse(mtl_path)
     if prefix == 'newmtl' then
       material = value
     elseif prefix == 'map_Kd' then
-      mtl[material] = value
+      mtl[material] = value:gsub('\\', '/')
     end
   end
 

@@ -120,6 +120,7 @@ end
 function utils.save_file(content, path)
   local file = io.open(path, 'w')
   if file == nil then
+    assert(file, 'Have you prepared map components folders? Can\'t save a file at path: ' .. path .. '.')
     return false
   end
   

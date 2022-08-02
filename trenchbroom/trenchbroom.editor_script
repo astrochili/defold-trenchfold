@@ -23,19 +23,39 @@ local function is_command_active(options)
   return is_map
 end
 
-local function make_clean_up_action(path)
+local function make_clean_up_action(paths)
   local script = ''
-  script = script .. 'if [ -d "' .. path .. '" ]; '
-  script = script .. 'then rm -r "' .. path .. '"; '
-  script = script .. 'fi; '
-  script = script .. 'mkdir ' .. '"' .. path .. '"'
 
-  print('Clean up \'' .. path .. '\'')
+  for _, path in ipairs(paths) do
+    if editor.platform == platforms.windows then
+      script = script .. 'if ( Test-Path -Path "' .. path .. '" ) '
+      script = script .. '{ '
+      script = script .. '[void](Remove-Item -Path "' .. path .. '" -Recurse); '
+      script = script .. '};'
+      script = script .. '[void](New-Item -Path "' .. path .. '" -ItemType Directory); '
+      script = script .. 'echo \'Cleaned up `' .. path .. '`\'; '
+    else
+      script = script .. 'if [ -d "' .. path .. '" ]; '
+      script = script .. 'then rm -r "' .. path .. '"; '
+      script = script .. 'fi; '
+      script = script .. 'mkdir ' .. '"' .. path .. '"; '
+      script = script .. 'echo "Cleaned up \'' .. path .. '\'"; ';
+    end
+  end
 
-  return {
-    action = 'shell',
+  local command
+  if editor.platform == platforms.windows then
+    command = { 'powershell', 'Invoke-Command -ScriptBlock { ' .. script .. ' }' }
+  else
     command = { 'sh', '-c', script }
+  end
+
+  local action = {
+    action = 'shell',
+    command = command
   }
+
+  return action
 end
 
 local function init_config(options)
@@ -53,13 +73,16 @@ local function clean_up_component_folders(options)
 
   print('')
   print('# Cleaning up')
-  
+
+  local paths = {
+    config.buffer_directory,
+    config.mesh_directory,
+    config.convexshape_directory,
+    config.collisionobject_directory,
+    config.script_directory
+  }
   local actions = {
-    make_clean_up_action(config.buffer_directory),
-    make_clean_up_action(config.mesh_directory),
-    make_clean_up_action(config.convexshape_directory),
-    make_clean_up_action(config.collisionobject_directory),
-    make_clean_up_action(config.script_directory)
+    make_clean_up_action(paths)
   }
 
   return actions
