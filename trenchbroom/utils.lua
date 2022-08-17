@@ -29,6 +29,18 @@ local flags, max_flag = make_flags_progression()
 --
 -- Public
 
+function utils.keys(source)
+  local keys = { }
+  local index = 0
+  
+  for key, _ in pairs(source) do
+    index = index + 1
+    keys[index] = key
+  end
+
+  return keys
+end
+
 function utils.boolean_from_string(value)
   local boolean
   

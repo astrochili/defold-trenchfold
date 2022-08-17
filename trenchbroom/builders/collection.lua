@@ -88,12 +88,27 @@ local function transfer_physics_to_go(item, go)
   return go
 end
 
+local function transfer_material_to_go(item, go)
+  go.material = item.material
+  item.material = nil
+
+  return go
+end
+
 local function transfer_components_to_go(item, go)
   go.components = item.components or { }
   item.components = nil
   
   return go
 end
+
+local function transfer_overrides_to_go(item, go)
+  go.overrides = item.overrides or { }
+  item.overrides = nil
+  
+  return go
+end
+
 
 local function transfer_properties_to_script(properties, go, instances)
   local full_script_path = config.full_path(config.script_directory, go.id .. '.script')
@@ -124,7 +139,7 @@ local function transfer_properties_to_go(item, go, instances)
   source.go = nil
   source.material = nil
   source.position = nil
-  source.origin = nil
+  source.rotation = nil
 
   if next(source) then
     transfer_properties_to_script(source, go, instances)
@@ -190,10 +205,30 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
         instances.buffer[full_buffer_path] = buffer
 
         local mesh = instances.mesh[full_mesh_path] or {
-          material = go.material or preferences.material or '/builtins/materials/model.material',
+          material = (go.material or { }).material or preferences.material.material or '/builtins/materials/model.material',
           buffer = config.resource_path(full_buffer_path),
-          texture = config.resource_path(config.assets_directory, face.texture.path)
+          texture0 = config.resource_path(config.assets_directory, face.texture.path)
         }
+
+        local texture0_directory = mesh.texture0:match('(.*)/')
+        local texture0_filename = mesh.texture0:match('.*/(.*)%.')
+        local texture0_extension = mesh.texture0:match('.*/.*%.(.*)')
+
+        for index = 1, 7 do
+          local texture_key = 'texture' .. index
+          local texture = (go.material or { })[texture_key] or preferences.material[texture_key]
+
+          if texture and texture:find('*') then
+            local texture_directory = texture:match('(.*)/') or texture0_directory
+            local texture_filename = texture:match('.*/(.*)%.') or texture:match('.*/(.*)') or texture:match('(.*)%.') or texture
+            local texture_extension = texture:match('.*%.(.*)') or texture0_extension
+
+            texture_filename = texture_filename:gsub('*', texture0_filename)
+            texture = texture_directory .. '/' .. texture_filename .. '.' .. texture_extension
+          end
+
+          mesh[texture_key] = texture
+        end
 
         instances.mesh[full_mesh_path] = mesh
         go.components[id] = config.resource_path(full_mesh_path)
@@ -257,14 +292,18 @@ local function item_to_go(item, preferences, instances)
   item.id = nil
 
   go = transfer_physics_to_go(item, go)
+  go = transfer_material_to_go(item, go)
   go = transfer_components_to_go(item, go)
+  go = transfer_overrides_to_go(item, go)
   go, instances = transfer_properties_to_go(item, go, instances)
   go, instances = transfer_brushes_to_go(item, go, instances, preferences)
   
   go.components = next(go.components) and go.components or nil
+  go.overrides = next(go.overrides) and go.overrides or nil
 
   if next(item) then
     go.gameobjects = { }
+    
     for child_id, child in pairs(item) do
       go.gameobjects[child_id] = item_to_go(child, preferences, instances)
     end

@@ -47,11 +47,27 @@ local function prepare_physics(entity)
   return next(physics) and physics or nil
 end
 
+local function prepare_material(entity)
+  local material = {
+    material = entity.material
+  }
+
+  for index = 0, 7 do
+    local texture = 'texture' .. index
+    material['texture' .. index] = entity[texture]
+    entity[texture] = nil
+  end
+
+  entity.material = nil
+
+  return material
+end
+
 local function prepare_components(entity)
   local components = { }
 
   for property, value in pairs(entity) do
-    if property:sub(1, 1) == '#' then
+    if property:sub(1, 1) == '#' and property:find('%.') == nil then
       local component_id = property:sub(2, #property)
       components[component_id] = value
       entity[property] = nil
@@ -59,6 +75,23 @@ local function prepare_components(entity)
   end
 
   return next(components) and components or nil
+end
+
+local function prepare_overrides(entity)
+  local overrides = { }
+
+  for property, value in pairs(entity) do
+    local component_id = property:match('#(.*)%.')
+    local component_property = property:match('#.*%.(.*)')
+    
+    if component_id and component_property then
+      overrides[component_id] = overrides[component_id] or { }
+      overrides[component_id][component_property] = value
+      entity[property] = nil
+    end
+  end
+
+  return next(overrides) and overrides or nil
 end
 
 local function prepare_properties(entity, textel_size)
@@ -173,7 +206,9 @@ function builder.build(map, obj, mtl)
   for _, map_entity in pairs(map.entities) do
     local entity = {
       physics = prepare_physics(map_entity),
+      material = prepare_material(map_entity),
       components = prepare_components(map_entity),
+      overrides = prepare_overrides(map_entity),
       properties = prepare_properties(map_entity, level.preferences.textel_size)
     }
 
@@ -187,11 +222,11 @@ function builder.build(map, obj, mtl)
       entity.properties = entity.properties or { }
       
       level.preferences.textel_size = entity.properties.textel_size
-      level.preferences.material = entity.properties.material
+      level.preferences.material = entity.material
       level.preferences.physics = entity.physics
 
       entity.properties.textel_size = nil
-      entity.properties.material = nil
+      entity.material = nil
       entity.physics = nil
 
       entity_id = classname
@@ -227,6 +262,15 @@ function builder.build(map, obj, mtl)
     entity.id = entity_id
 
     group[entity_id] = entity
+  end
+
+  for group_name, group_entities in pairs(level.entities) do
+    local keys = utils.keys(group_entities)
+    local single_key = group_name .. '_1'
+
+    if #keys == 1 and keys[1] == single_key then
+      level.entities[group_name] = group_entities[single_key]
+    end
   end
 
   return level

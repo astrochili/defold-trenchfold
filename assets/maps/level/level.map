@@ -1117,9 +1117,9 @@
 // entity 1
 {
 "classname" "trigger"
-"door_url" "main_door"
+"#door.target_url" "main_door"
 "#door" "/example/door.script"
-"door_direction" "0 1.95 0"
+"#door.direction" "0 1.95 0"
 "physics_mask" "walker"
 "id" "door_trigger"
 // brush 0

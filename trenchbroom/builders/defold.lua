@@ -6,6 +6,7 @@
   MIT license. See LICENSE for details.
 --]]
 
+local utils = require 'trenchbroom.utils'
 local config = require 'trenchbroom.config'
 local templates = require 'trenchbroom.builders.templates'
 
@@ -19,12 +20,16 @@ local function quat_from_euler(euler)
     return { x = 0, y = 0, z = 0, w = 1 }
   end
 
-  local sr = math.sin(euler.x / 2)
-  local sp = math.sin(euler.y / 2)
-  local sy = math.sin(euler.z / 2)
-  local cr = math.cos(euler.x / 2)
-  local cp = math.cos(euler.y / 2)
-  local cy = math.cos(euler.z / 2)
+  local x = math.rad(euler.x)
+  local y = math.rad(euler.y)
+  local z = math.rad(euler.z)
+
+  local sr = math.sin(x / 2)
+  local sp = math.sin(y / 2)
+  local sy = math.sin(z / 2)
+  local cr = math.cos(x / 2)
+  local cp = math.cos(y / 2)
+  local cy = math.cos(z / 2)
 
   local quat = {
     x = sr * cp * cy - cr * sp * sy,
@@ -51,6 +56,31 @@ local function make_float_body(number)
   end
 
   return text
+end
+
+local function make_raw_property(property, value)
+  local raw_type = templates.property_type.hash
+  local raw_value = value
+
+  if type(value) == 'number' then 
+    raw_type = templates.property_type.number
+    raw_value = make_float_body(value)
+  elseif type(value) == 'boolean' then
+    raw_type = templates.property_type.boolean
+    raw_value = tostring(value)
+  elseif type(value) == 'table' then
+    raw_type = templates.property_type.vector3
+    raw_value = make_float_body(value.x) .. ', ' .. make_float_body(value.y) .. ', ' .. make_float_body(value.z)
+    
+    if value.w then
+      raw_type = templates.property_type.vector4
+      raw_value = raw_value .. ', ' .. make_float_body(value.w)
+    end
+  elseif property:sub(-3):lower() == 'url' then
+    raw_type = templates.property_type.url
+  end
+
+  return raw_type, raw_value
 end
 
 --
@@ -90,7 +120,15 @@ local function make_mesh_body(mesh)
 
   body = body .. 'material: "' .. mesh.material .. '"\n'
   body = body .. 'vertices: "'.. mesh.buffer .. '"\n'
-  body = body .. 'textures: "'.. mesh.texture .. '"\n'
+
+  for index = 0, 7 do
+    local texture = mesh['texture' .. index]
+
+    if texture then
+      body = body .. 'textures: "'.. texture .. '"\n'
+    end
+  end
+
   body = body .. 'primitive_type: PRIMITIVE_TRIANGLES' .. '\n'
   body = body .. 'position_stream: "position"' .. '\n'
   body = body .. 'normal_stream: "normal"'
@@ -198,6 +236,25 @@ local function make_script_body(script)
 end
 
 --
+-- Properties
+
+local function make_property_bodies(property_template, overrides)
+  local property_bodies = { }
+
+  for property, value in pairs(overrides or { }) do
+    local raw_type, raw_value = make_raw_property(property, value)
+    
+    local property_body = property_template:gsub('_PROPERTY_', property)
+    property_body = property_body:gsub('_VALUE_', raw_value)
+    property_body = property_body:gsub('_TYPE_', raw_type)
+
+    table.insert(property_bodies, property_body)
+  end
+
+  return property_bodies
+end
+
+--
 -- Collection
 
 local function object_to_bodies(object, instance_bodies, embedded_instance_bodies, parent_children_ids)
@@ -247,6 +304,13 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
         for component_id, component_path in pairs(child.components or { }) do
           local component_body = templates.component:gsub('_ID_', component_id)
           component_body = component_body:gsub('_PATH_', component_path)
+
+          -- Set component overrides
+
+          local overrides = (child.overrides or { })[component_id]
+          local component_property_bodies = make_property_bodies(templates.component_property, overrides)
+          component_body = component_body:gsub('_COMPONENT_PROPERTIES_\n', table.concat(component_property_bodies))
+          
           table.insert(components, component_body)
         end
         
@@ -274,6 +338,21 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
 
         table.insert(embedded_instance_bodies, instance_body)
       else
+
+        -- Set instance overrides
+
+        local instance_properties_bodies = { }
+
+        for component_id, overrides in pairs(child.overrides or { }) do
+          local instance_properties_body = templates.instance_properties:gsub('_ID_', component_id)
+          local instance_property_bodies = make_property_bodies(templates.instance_property, overrides)
+  
+          instance_properties_body = instance_properties_body:gsub('_PROPERTIES_\n', table.concat(instance_property_bodies))
+          table.insert(instance_properties_bodies, instance_properties_body)
+        end
+  
+        instance_body = instance_body:gsub('_INSTANCE_PROPERTIES_\n', table.concat(instance_properties_bodies))
+  
         table.insert(instance_bodies, instance_body)
       end
     end
