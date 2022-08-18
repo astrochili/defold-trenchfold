@@ -117,6 +117,7 @@ The default entity for all the geometry outside of the other entities. Also has 
 
 - `textel_size` — how much Trenchbroom grid units are equal to one unit in Defold metrics. 
 - `material` — the relative path to the material that will be used for generated meshes by default.
+- `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties used by default.
 
 ### static*
@@ -125,7 +126,9 @@ A brush entity with the static collision type. The only reason to use it is to a
 
 - `id` — the identifier of the game object.
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`.
+- `#component_id.property` — the script component property override.
 - `material` — the relative path to the material that will be set in generated meshes.
+- `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to static collision type.
 
 ### trigger*
@@ -136,6 +139,7 @@ If you place brushes with normal textures to this entity they also become trigge
 
 - `id` — the identifier of the game object.
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`.
+- `#component_id.property` — the script component property override.
 - `physics_*` — collision object properties related to trigger collision type.
 
 ### kinematic*
@@ -144,7 +148,9 @@ A brush entity with the kinematic collision type. Use it for moving platforms or
 
 - `id` — the identifier of the game object.
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`.
+- `#component_id.property` — the script component property override.
 - `material` — the relative path to the material that will be set in generated meshes.
+- `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to kinematic collision type.
 
 ### dynamic*
@@ -153,7 +159,9 @@ A brush entity with dthe ynamic collision type. This could be, for example, a cr
 
 - `id` — the identifier of the game object.
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`.
+- `#component_id.property` — the script component property override.
 - `material` — the relative path to the material that will be set in generated meshes.
+- `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to dynamic collision type.
 
 ### go
@@ -166,10 +174,21 @@ This is a point entity to add a game object without meshes and collision objects
 - `id` — the identifier of the game object.
 - `go` — the relative path to the `.go` file that should replace the entity.
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`. Ignored if the `go` property exists. 
+- `#component_id.property` — the script component property override.
 
-### light
+### illumination, light_point, light_spot
 
-This is a point entity just for demonstration how you can extend the `Defold.fgd` file with different types such as color, dropdown choices and flags. Yes, it's a spoiler.
+These are helpers for placing 💡 [Illumination](https://github.com/astrochili/defold-illumination) objects on the map. Don't forget to fill the `go` property with default value.
+
+## Texture Path Patterns
+
+The `textureN` property allows to set additional material textures 1-7. The next patterns are available:
+
+- `/path/to/texture.png` — a specific texture.
+- `/path/to/prefix_*_suffix.png` — a specific path where * is texture0 original name.
+- `/path/to/alternative/*` — a specific folder with the same texture file name.
+- `prefix_*_suffix.png` — the same folder.
+- `prefix_*_suffix` — the same folder and extension.
 
 ## Custom Properties
 
@@ -194,6 +213,10 @@ If the number is flags value then you can parse it with `utils.flags_from_intege
 - Value `x y` is converted to `math.vector3(x, y, 0)`.
 - Value `x y z` is converted to `math.vector3(x, y, w)`.
 - Value `x y z w` is converted to `math.vector4(x, y, z, w)`.
+
+### _color
+
+TrenchBroom shows the color picker only if the property ends with `_color`. To use `color` in scipt properties and not lose the color picker, the `_color` property will automatically be converted to `color`.
 
 ### *url
 
