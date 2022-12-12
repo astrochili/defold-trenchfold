@@ -32,6 +32,12 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 - [x] Expand the game configuration file with your own classes.
 - [ ] Request by [adding an issue or contribute](https://github.com/astrochili/defold-trenchbroom/issues).
 
+## Running the Example
+
+To run the example project, you first need to run two editor extension functions on a map file provided, according the [Export and Import](#export-and-import) part.
+
+With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchbroom/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example. 
+
 ## Install
 
 1. Add link to the zip-archive of the latest version of [defold-trenchbroom](https://github.com/astrochili/defold-trenchbroom/releases) to your Defold project as [dependency](http://www.defold.com/manuals/libraries/).
