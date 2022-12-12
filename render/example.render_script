@@ -35,6 +35,7 @@ function update(self)
   -- scene
   render.set_view(self.scene.view)
   render.set_projection(self.scene.projection)
+  render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
   render.enable_state(render.STATE_BLEND)
   render.enable_state(render.STATE_CULL_FACE)
   render.enable_state(render.STATE_DEPTH_TEST)
