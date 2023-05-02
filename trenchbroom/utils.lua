@@ -155,7 +155,7 @@ end
 function utils.get_lines(content)
   local lines = { }
 
-  for line in content:gmatch '[^\n]+' do
+  for line in content:gmatch '[^\r\n]+' do
     table.insert(lines, line)
   end
 
