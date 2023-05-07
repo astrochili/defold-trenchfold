@@ -220,10 +220,6 @@ If the number is flags value then you can parse it with `utils.flags_from_intege
 - Value `x y z` is converted to `math.vector3(x, y, w)`.
 - Value `x y z w` is converted to `math.vector4(x, y, z, w)`.
 
-### _color
-
-TrenchBroom shows the color picker only if the property ends with `_color`. To use `color` in scipt properties and not lose the color picker, the `_color` property will automatically be converted to `color`.
-
 ### *url
 
 Property ending with `url` is converted to `msg.url('value')`.

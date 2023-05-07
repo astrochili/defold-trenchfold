@@ -131,12 +131,6 @@ function parser.parse(map_path)
         value = number or vector or value
       end
 
-      if property == '_color' then
-        property = 'color'
-      else
-        property = property:gsub('%._color', '.color')
-      end
-
       entity[property] = value
       
       do break end

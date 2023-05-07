@@ -69,7 +69,7 @@
 ]
 
 @BaseClass base(id) = light [
-	#light._color(color): "Light color" : "1.0 1.0 1.0"
+	#light.color(color): "Light color" : "1.0 1.0 1.0"
 	#light.brightness(float): "Light brightness" : "0.7"
 	#light.radius(float): "Radius of lighting" : "5.0"
 	#light.specular(float): "Specular component" : "0.5"
