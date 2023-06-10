@@ -6,7 +6,6 @@
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
 local config = require 'trenchbroom.config'
 local templates = require 'trenchbroom.builders.templates'
 
