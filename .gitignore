@@ -20,3 +20,11 @@ log.txt
 
 # TrenchBroom
 **/autosave/*.map
+
+# Generated Map
+assets/maps/**/buffer
+assets/maps/**/collisionobject
+assets/maps/**/convexshape
+assets/maps/**/mesh
+assets/maps/**/script
+assets/maps/**/*.collection
