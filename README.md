@@ -1,7 +1,13 @@
 ![logo](https://user-images.githubusercontent.com/4752473/179576684-bea03ccb-0b52-4346-819a-927e4d5d3c0e.jpg)
-[![buymeacoffee](https://user-images.githubusercontent.com/4752473/179627111-617b77b1-f900-4fac-9e03-df73994246ad.svg)](https://www.buymeacoffee.com/astrochili) [![tinkoff](https://user-images.githubusercontent.com/4752473/188312285-9162bbed-e50f-40ad-9fbf-a622a80f0249.svg)](https://www.tinkoff.ru/cf/4B9FjHDHA5a) [![twitter](https://user-images.githubusercontent.com/4752473/179627140-c8991473-c4c1-4d6a-9bb1-4dc2117b049f.svg)](https://twitter.com/astronachos) [![telegram](https://user-images.githubusercontent.com/4752473/179627134-0bdcf8a5-7826-4ed2-b8cd-06d0b9792422.svg)](https://t.me/astronachos)
+[![astronachos](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/astronachos.svg)](https://astronachos.com) [![twitter](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/twitter.svg)](https://twitter.com/astronachos) [![telegram](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/telegram.svg)](https://t.me/astronachos) [![buymeacoffee](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/buymeacoffee.svg)](https://www.buymeacoffee.com/astrochili) [![tinkoff](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/tinkoff.svg)](https://www.tinkoff.ru/cf/4B9FjHDHA5a)
 
 # TrenchBroom extension for Defold
+
+📼 Also in this series:
+- 👖 [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker)
+- 🎥 [Operator](https://github.com/astrochili/defold-operator)
+- 🎄 [Illumination](https://github.com/astrochili/defold-illumination)
+- 🚧 [Blockout Textures](https://github.com/astrochili/blockout-textures)
 
 ## Overview
 
@@ -13,11 +19,7 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 
 💬 [Discuss on the forum](https://forum.defold.com/t/trenchbroom-extension-for-defold/71284).
 
-🎥 Look at [Operator](https://github.com/astrochili/defold-operator) and [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker) used in the demo.
-
 🧪 Look at [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack) by [Little Martian](https://little-martian.dev/) used in the demo.
-
-🎁 Get [free blockout textures](https://github.com/astrochili/blockout-textures) to start prototyping.
 
 ## Features
 
