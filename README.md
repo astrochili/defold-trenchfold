@@ -1,7 +1,14 @@
 ![logo](https://user-images.githubusercontent.com/4752473/179576684-bea03ccb-0b52-4346-819a-927e4d5d3c0e.jpg)
-[![astronachos](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/astronachos.svg)](https://astronachos.com) [![twitter](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/twitter.svg)](https://twitter.com/astronachos) [![telegram](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/telegram.svg)](https://t.me/astronachos) [![buymeacoffee](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/buymeacoffee.svg)](https://www.buymeacoffee.com/astrochili) [![tinkoff](https://raw.githubusercontent.com/astronachos/astronachos.github.io/master/static/badges/tinkoff.svg)](https://www.tinkoff.ru/cf/4B9FjHDHA5a)
 
 # TrenchBroom extension for Defold
+
+[![Release](https://img.shields.io/github/v/release/astrochili/defold-trenchbroom.svg?include_prereleases=&sort=semver&color=blue)](https://github.com/astrochili/defold-trenchbroom/releases)
+[![License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/astrochili/defold-trenchbroom/blob/master/LICENSE)
+[![Website](https://img.shields.io/badge/website-gray.svg?&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNiIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDE4IDE2Ij48Y2lyY2xlIGN4PSIzLjY2IiBjeT0iMTQuNzUiIHI9IjEuMjUiIGZpbGw9InVybCgjYSkiLz48Y2lyY2xlIGN4PSI4LjY2IiBjeT0iMTQuNzUiIHI9IjEuMjUiIGZpbGw9InVybCgjYikiLz48Y2lyY2xlIGN4PSIxMy42NSIgY3k9IjE0Ljc1IiByPSIxLjI1IiBmaWxsPSJ1cmwoI2MpIi8+PHBhdGggZmlsbD0idXJsKCNkKSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNy42MyAxLjQ4Yy41LS43IDEuNTUtLjcgMi4wNSAwbDYuMjIgOC44MWMuNTguODMtLjAxIDEuOTctMS4wMyAxLjk3SDIuNDRhMS4yNSAxLjI1IDAgMCAxLTEuMDItMS45N2w2LjIxLTguODFaIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIyLjQxIiB4Mj0iMi40MSIgeTE9IjEzLjUiIHkyPSIxNiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNGRDhENDIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGOTU0MUYiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDE9IjcuNDEiIHgyPSI3LjQxIiB5MT0iMTMuNSIgeTI9IjE2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iI0ZEOEQ0MiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5NTQxRiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMTIuNCIgeDI9IjEyLjQiIHkxPSIxMy41IiB5Mj0iMTYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjRkQ4RDQyIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjk1NDFGIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIuMDMiIHgyPSIuMDMiIHkxPSIuMDMiIHkyPSIxMi4yNiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNGRkU2NUUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkM4MzAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=)](https://astronachos.com/)
+[![Mastodon](https://img.shields.io/badge/mastodon-gray?&logo=mastodon)](https://mastodon.gamedev.place/@astronachos)
+[![Twitter](https://img.shields.io/badge/twitter-gray?&logo=twitter)](https://twitter.com/astronachos)
+[![Telegram](https://img.shields.io/badge/telegram-gray?&logo=telegram)](https://t.me/astronachos)
+[![Buy me a coffee](https://img.shields.io/badge/buy_me_a_coffee-gray?&logo=buy%20me%20a%20coffee)](https://buymeacoffee.com/astrochili)
 
 📼 Also in this series:
 - 👖 [Kinematic Walker](https://github.com/astrochili/defold-kinematic-walker)
@@ -38,7 +45,7 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 
 To run the example project, you first need to run two editor extension functions on a map file provided, according the [Export and Import](#export-and-import) part.
 
-With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchbroom/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example. 
+With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchbroom/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
 
 ## Install
 
@@ -79,7 +86,7 @@ The game configuration includes marking textures at `flags/textures`. They are h
 
 This face will be skipped when exporting.
 
-Use it to remove useless faces from the geometry. 
+Use it to remove useless faces from the geometry.
 
 ### clip
 
@@ -123,7 +130,7 @@ There are brush entities and point entities. The difference is that a brush enti
 
 The default entity for all the geometry outside of the other entities. Also has some general settings of exporting.
 
-- `textel_size` — how much Trenchbroom grid units are equal to one unit in Defold metrics. 
+- `textel_size` — how much Trenchbroom grid units are equal to one unit in Defold metrics.
 - `material` — the relative path to the material that will be used for generated meshes by default.
 - `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties used by default.
@@ -181,7 +188,7 @@ This is a point entity to add a game object without meshes and collision objects
 - `rotation` — X, Y and Z-axis rotation of the game object. Y-axis will be ignored if the `angle` property exists.
 - `id` — the identifier of the game object.
 - `go` — the relative path to the `.go` file that should replace the entity.
-- `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`. Ignored if the `go` property exists. 
+- `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`. Ignored if the `go` property exists.
 - `#component_id.property` — the script component property override.
 
 ### illumination, light_point, light_spot
