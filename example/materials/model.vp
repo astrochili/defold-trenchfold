@@ -15,6 +15,6 @@ void main() {
     var_position = mtx_worldview * vec4(position.xyz, 1.0);
     var_texcoord0 = texcoord0;
     var_normal = normal;
-    
+
     gl_Position = mtx_proj * var_position;
 }

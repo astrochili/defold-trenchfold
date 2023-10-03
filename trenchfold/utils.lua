@@ -1,6 +1,6 @@
 --[[
   utils.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
@@ -20,7 +20,7 @@ local function make_flags_progression()
     flags[index] = flag
     max_flag = max_flag + flag
   end
-  
+
   return flags, max_flag
 end
 
@@ -32,7 +32,7 @@ local flags, max_flag = make_flags_progression()
 function utils.keys(source)
   local keys = { }
   local index = 0
-  
+
   for key, _ in pairs(source) do
     index = index + 1
     keys[index] = key
@@ -43,13 +43,13 @@ end
 
 function utils.boolean_from_string(value)
   local boolean
-  
+
   if value == 'true' then
     boolean = true
   elseif value == 'false' then
     boolean = false
   end
-    
+
   return boolean
 end
 
@@ -57,10 +57,10 @@ function utils.flags_from_integer(integer)
   if integer < 1 then
     return { }
   end
-  
+
   local integer = math.min(integer, max_flag)
   local lower_flag = nil
-  
+
   for index = 1, #flags do
     local flag = flags[index]
 
@@ -68,7 +68,7 @@ function utils.flags_from_integer(integer)
       lower_flag = integer
       break
     end
-    
+
     if flag < integer then
       lower_flag = flag
     else
@@ -96,7 +96,7 @@ function utils.shallow_copy(orig)
   if orig == nil then
     return nil
   end
-  
+
   local copy = { }
 
   for key, value in pairs(orig) do
@@ -120,7 +120,7 @@ function utils.clear_folder(path)
 
   if is_directory_exists then
     io.close(directory)
-    
+
     local is_windows = package.config:sub(1, 1) == '\\'
     local command = is_windows and 'rmdir /s' or 'rm -r'
     os.execute(command .. ' "' .. path .. '"')
@@ -135,10 +135,10 @@ function utils.save_file(content, path)
     assert(file, 'Have you prepared map components folders? Can\'t save a file at path: ' .. path .. '.')
     return false
   end
-  
+
   file:write(content)
   file:close()
-  
+
   return true
 end
 

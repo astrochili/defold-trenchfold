@@ -1,9 +1,9 @@
 ![logo](https://user-images.githubusercontent.com/4752473/179576684-bea03ccb-0b52-4346-819a-927e4d5d3c0e.jpg)
 
-# TrenchBroom extension for Defold
+# TrenchFold
 
-[![Release](https://img.shields.io/github/v/release/astrochili/defold-trenchbroom.svg?include_prereleases=&sort=semver&color=blue)](https://github.com/astrochili/defold-trenchbroom/releases)
-[![License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/astrochili/defold-trenchbroom/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/astrochili/defold-trenchfold.svg?include_prereleases=&sort=semver&color=blue)](https://github.com/astrochili/defold-trenchfold/releases)
+[![License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/astrochili/defold-trenchfold/blob/master/LICENSE)
 [![Website](https://img.shields.io/badge/website-gray.svg?&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNiIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDE4IDE2Ij48Y2lyY2xlIGN4PSIzLjY2IiBjeT0iMTQuNzUiIHI9IjEuMjUiIGZpbGw9InVybCgjYSkiLz48Y2lyY2xlIGN4PSI4LjY2IiBjeT0iMTQuNzUiIHI9IjEuMjUiIGZpbGw9InVybCgjYikiLz48Y2lyY2xlIGN4PSIxMy42NSIgY3k9IjE0Ljc1IiByPSIxLjI1IiBmaWxsPSJ1cmwoI2MpIi8+PHBhdGggZmlsbD0idXJsKCNkKSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNy42MyAxLjQ4Yy41LS43IDEuNTUtLjcgMi4wNSAwbDYuMjIgOC44MWMuNTguODMtLjAxIDEuOTctMS4wMyAxLjk3SDIuNDRhMS4yNSAxLjI1IDAgMCAxLTEuMDItMS45N2w2LjIxLTguODFaIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIyLjQxIiB4Mj0iMi40MSIgeTE9IjEzLjUiIHkyPSIxNiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNGRDhENDIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGOTU0MUYiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDE9IjcuNDEiIHgyPSI3LjQxIiB5MT0iMTMuNSIgeTI9IjE2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iI0ZEOEQ0MiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5NTQxRiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMTIuNCIgeDI9IjEyLjQiIHkxPSIxMy41IiB5Mj0iMTYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjRkQ4RDQyIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjk1NDFGIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIuMDMiIHgyPSIuMDMiIHkxPSIuMDMiIHkyPSIxMi4yNiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNGRkU2NUUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkM4MzAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=)](https://astronachos.com/)
 [![Mastodon](https://img.shields.io/badge/mastodon-gray?&logo=mastodon)](https://mastodon.gamedev.place/@astronachos)
 [![Twitter](https://img.shields.io/badge/twitter-gray?&logo=twitter)](https://twitter.com/astronachos)
@@ -24,7 +24,7 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 
 🎮 [Play HTML5 demo](https://astronachos.com/defold/trenchbroom).
 
-💬 [Discuss on the forum](https://forum.defold.com/t/trenchbroom-extension-for-defold/71284).
+💬 [Discuss on the forum](https://forum.defold.com/t/trenchfold-trenchbroom-extension-for-defold/71284).
 
 🧪 Look at [Retro Texture Pack](https://little-martian.itch.io/retro-texture-pack) by [Little Martian](https://little-martian.dev/) used in the demo.
 
@@ -39,18 +39,18 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 - [x] Define areas and handle their coordinates in scripts.
 - [x] Run importing with the editor script or the standalone lua module.
 - [x] Expand the game configuration file with your own classes.
-- [ ] Request by [adding an issue or contribute](https://github.com/astrochili/defold-trenchbroom/issues).
+- [ ] Request by [adding an issue or contribute](https://github.com/astrochili/defold-trenchfold/issues).
 
 ## Running the Example
 
 To run the example project, you first need to run two editor extension functions on a map file provided, according the [Export and Import](#export-and-import) part.
 
-With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchbroom/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
+With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchfold/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
 
 ## Install
 
-1. Add link to the zip-archive of the latest version of [defold-trenchbroom](https://github.com/astrochili/defold-trenchbroom/releases) to your Defold project as [dependency](http://www.defold.com/manuals/libraries/).
-2. Copy the `trenchbroom/games/Defold` folder according [this instruction](https://trenchbroom.github.io/manual/latest/#game_configuration_files) to TrenchBroom user data folder.
+1. Add link to the zip-archive of the latest version of [defold-trenchfold](https://github.com/astrochili/defold-trenchfold/releases) to your Defold project as [dependency](http://www.defold.com/manuals/libraries/).
+2. Copy the `trenchfold/games/Defold` folder according [this instruction](https://trenchbroom.github.io/manual/latest/#game_configuration_files) to TrenchBroom user data folder.
 3. Place your texture packs at path `assets/textures` to use them in TrenchBroom.
 4. Set your game project path as the game path in TrenchBroom preferences when creating the first map.
 5. Setup `textel_size` and `material` in the [worldspawn](#worldspawn) entity.
@@ -61,9 +61,11 @@ With the project open in Defold, right click on the [level.map](https://github.c
 
 Before import you need to export `.obj` file from TrenchBroom by menu `File / Export / Wavefront OBJ`. The importing script uses `.obj` data to parse vertices, so it must be done every time the geometry is changed.
 
-It would be possible to skip this step by solving the issue [#1](https://github.com/astrochili/defold-trenchbroom/issues/1).
+It would be possible to skip this step by solving the issue [#1](https://github.com/astrochili/defold-trenchfold/issues/1).
 
-### Import with Editor Script
+### Import
+
+#### Editor Script
 
 Find your `.map` file in the resources pane of the editor and right click on it to see two actions.
 
@@ -72,9 +74,9 @@ Find your `.map` file in the resources pane of the editor and right click on it 
 
 These actions are separated because of the editor scripts limitation, upvote for the Defold issue [#6810](https://github.com/defold/defold/issues/6810).
 
-### Import with Lua Module
+#### Lua Module
 
-There is also the `trenchbroom/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`. It will do everything, including preparing folders. For example, you can add the launch task to VSCode to run it.
+There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`. It will do everything, including preparing folders. For example, you can add the launch task to VSCode to run it.
 
 ## Textures
 
@@ -221,7 +223,7 @@ The values `true` and `false` are converted to boolean.
 
 The value which can be handled with `tonumber()` is converted to number.
 
-If the number is flags value then you can parse it with `utils.flags_from_integer(value)` from the `trenchbroom/utils.lua` module.
+If the number is flags value then you can parse it with `utils.flags_from_integer(value)` from the `trenchfold/utils.lua` module.
 
 ### vectors
 

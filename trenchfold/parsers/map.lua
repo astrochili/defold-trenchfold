@@ -1,13 +1,13 @@
 --[[
   map.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
-local config = require 'trenchbroom.config'
+local utils = require 'trenchfold.utils'
+local config = require 'trenchfold.config'
 
 local parser = { }
 
@@ -30,7 +30,7 @@ local patterns = {
 
 local function parse_vector(raw)
   local x, y, z, w = raw:match(patterns.vector4)
-  
+
   if not x then
     x, y, z = raw:match(patterns.vector3)
   end
@@ -38,7 +38,7 @@ local function parse_vector(raw)
   if not x then
     x, y = raw:match(patterns.vector2)
   end
-  
+
   x = tonumber(x)
   y = tonumber(y)
   z = tonumber(z)
@@ -68,8 +68,8 @@ function parser.parse(map_path)
   local entity
   local brush
 
-  for _, line in ipairs(lines) do repeat    
-    
+  for _, line in ipairs(lines) do repeat
+
     -- Read the map meta
 
     local meta, value = line:match(patterns.meta)
@@ -82,7 +82,7 @@ function parser.parse(map_path)
     -- Read the group header
 
     local group_type, index = line:match(patterns.group)
-    
+
     if group_type and index then
       if brush then
         -- Finish to parse the current brush
@@ -98,7 +98,7 @@ function parser.parse(map_path)
           table.insert(map.entities, entity)
           entity = nil
         end
-        
+
         entity = {
           index = tonumber(index),
           brushes = { }
@@ -120,7 +120,7 @@ function parser.parse(map_path)
     if property and value then
       local property = utils.trim(property)
       local value = utils.trim(value)
-  
+
       local number = tonumber(value)
       local boolean = utils.boolean_from_string(value)
       local vector = parse_vector(value)
@@ -132,14 +132,14 @@ function parser.parse(map_path)
       end
 
       entity[property] = value
-      
+
       do break end
     end
 
     -- Read the brush face
 
     local planes, texture, attributes = line:match(patterns.face_long)
-    
+
     if not attributes then
       planes, texture = line:match(patterns.face_short)
     end
@@ -191,7 +191,7 @@ function parser.parse(map_path)
 
       do break end
     end
-    
+
   until true end
 
   if brush then

@@ -28,7 +28,7 @@ function update(self)
     [render.BUFFER_DEPTH_BIT] = 1,
     [render.BUFFER_STENCIL_BIT] = 0
   }
-  
+
   render.clear(clear_options)
   render.set_viewport(0, 0, self.window.width, self.window.height)
 
@@ -44,7 +44,7 @@ function update(self)
 
   -- debug
   render.disable_state(render.STATE_DEPTH_TEST)
-  render.disable_state(render.STATE_CULL_FACE)    
+  render.disable_state(render.STATE_CULL_FACE)
   render.draw_debug3d()
 
   -- gui

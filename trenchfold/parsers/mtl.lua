@@ -1,12 +1,12 @@
 --[[
   mtl.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
+local utils = require 'trenchfold.utils'
 
 local parser = { }
 
@@ -17,7 +17,7 @@ function parser.parse(mtl_path)
   local mtl = { }
 
   local content = utils.read_file(mtl_path)
-  local lines = utils.get_lines(content)  
+  local lines = utils.get_lines(content)
 
   local material
 

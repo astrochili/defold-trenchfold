@@ -1,13 +1,13 @@
 --[[
   defold.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local config = require 'trenchbroom.config'
-local templates = require 'trenchbroom.builders.templates'
+local config = require 'trenchfold.config'
+local templates = require 'trenchfold.builders.templates'
 
 local builder = { }
 
@@ -47,7 +47,7 @@ end
 
 local function make_float_body(number)
   local text = tostring(number)
-  
+
   if text == 'nil' or text == '-0' then
     text = '0.0'
   elseif text:find('%.') == nil then
@@ -61,7 +61,7 @@ local function make_raw_property(property, value)
   local raw_type = templates.property_type.hash
   local raw_value = value
 
-  if type(value) == 'number' then 
+  if type(value) == 'number' then
     raw_type = templates.property_type.number
     raw_value = make_float_body(value)
   elseif type(value) == 'boolean' then
@@ -70,7 +70,7 @@ local function make_raw_property(property, value)
   elseif type(value) == 'table' then
     raw_type = templates.property_type.vector3
     raw_value = make_float_body(value.x) .. ', ' .. make_float_body(value.y) .. ', ' .. make_float_body(value.z)
-    
+
     if value.w then
       raw_type = templates.property_type.vector4
       raw_value = raw_value .. ', ' .. make_float_body(value.w)
@@ -107,7 +107,7 @@ local function make_buffer_body(buffer)
 
   table.sort(stream_bodies, function(a, b) return a < b end)
   local body = '[\n' .. table.concat(stream_bodies, ',\n') .. '\n]'
-  
+
   return body
 end
 
@@ -171,7 +171,7 @@ local function make_collisionobject_body(collision_object)
   body = body .. 'angular_damping: ' .. make_float_body(collision_object.angular_damping) .. '\n'
   body = body .. 'locked_rotation: ' .. tostring(collision_object.locked_rotation) .. '\n'
   body = body .. 'bullet: ' .. tostring(collision_object.bullet) .. ''
-  
+
   return body
 end
 
@@ -211,10 +211,10 @@ local function make_script_body(script)
       body = body .. 'go.property(\'' .. property .. '\', ' .. value .. ')\n'
     end
   end
-  
+
   if script.properties.areas then
     body = body .. '\nfunction init(self)\n'
-    body = body .. '  msg.post(\'.\', hash \'init_area\', {\n   '  
+    body = body .. '  msg.post(\'.\', hash \'init_area\', {\n   '
 
     for _, area in ipairs(script.properties.areas) do
       local vector_bodies = { }
@@ -222,7 +222,7 @@ local function make_script_body(script)
       for _, vector in ipairs(area) do
         local vector_body = make_vector_body(vector)
         table.insert(vector_bodies, vector_body)
-      end  
+      end
 
       body = body .. ' {\n      ' .. table.concat(vector_bodies, ',\n      ') .. '\n    },'
     end
@@ -242,7 +242,7 @@ local function make_property_bodies(property_template, overrides)
 
   for property, value in pairs(overrides or { }) do
     local raw_type, raw_value = make_raw_property(property, value)
-    
+
     local property_body = property_template:gsub('_PROPERTY_', property)
     property_body = property_body:gsub('_VALUE_', raw_value)
     property_body = property_body:gsub('_TYPE_', raw_type)
@@ -261,20 +261,20 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
     if type(child) == 'table' then
       local instance_body
       local is_embedded = child.go == nil
-      
+
       if is_embedded then
         instance_body = templates.embedded_instance
       else
         instance_body = templates.instance:gsub('_PATH_', child.go)
         child.go = nil
       end
-      
+
       if parent_children_ids then
         table.insert(parent_children_ids, id)
       end
 
       -- Set identifier
-      
+
       instance_body = instance_body:gsub('_ID_', id)
 
       -- Set position
@@ -309,10 +309,10 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
           local overrides = (child.overrides or { })[component_id]
           local component_property_bodies = make_property_bodies(templates.component_property, overrides)
           component_body = component_body:gsub('_COMPONENT_PROPERTIES_\n', table.concat(component_property_bodies))
-          
+
           table.insert(components, component_body)
         end
-        
+
         if #components > 0 then
           data = table.concat(components)
           data = #components > 0 and data:sub(3) or data
@@ -345,13 +345,13 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
         for component_id, overrides in pairs(child.overrides or { }) do
           local instance_properties_body = templates.instance_properties:gsub('_ID_', component_id)
           local instance_property_bodies = make_property_bodies(templates.instance_property, overrides)
-  
+
           instance_properties_body = instance_properties_body:gsub('_PROPERTIES_\n', table.concat(instance_property_bodies))
           table.insert(instance_properties_bodies, instance_properties_body)
         end
-  
+
         instance_body = instance_body:gsub('_INSTANCE_PROPERTIES_\n', table.concat(instance_properties_bodies))
-  
+
         table.insert(instance_bodies, instance_body)
       end
     end
@@ -368,7 +368,7 @@ local function make_collection_body(collection)
 
   body = body:gsub('_EMBEDDED_INSTANCES_\n', table.concat(embedded_instance_bodies))
   body = body:gsub('_INSTANCES_\n', table.concat(instance_bodies))
-  
+
   return body
 end
 
@@ -398,7 +398,7 @@ function builder.build(instances)
   end
 
   table.sort(files, function(a, b) return a.path > b.path end)
-  
+
   return files
 end
 

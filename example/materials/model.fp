@@ -12,7 +12,7 @@ void main() {
     }
 
     float ambient_part = 0.8;
-    
+
     vec3 diffuse = vec3(1.0 - ambient_part);
     diffuse = vec3(ambient_part) + diffuse * vec3(var_normal.y);
 

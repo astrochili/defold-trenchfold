@@ -1,12 +1,12 @@
 --[[
   obj.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
+local utils = require 'trenchfold.utils'
 
 local parser = { }
 
@@ -32,7 +32,7 @@ end
 
 local function parse_face(source, obj)
   local face = { vertices = { } }
-  
+
   for i, j, k in source:gmatch('([%d]*)/([%d]*)/([%d]*)') do
     local vertice = {
       position = obj.positions[tonumber(i)],
@@ -52,7 +52,7 @@ local obj_builders = {
     table.insert(obj.positions, value)
   end,
 
-  vn = function(obj, raw) 
+  vn = function(obj, raw)
     local value = parse_vector3(raw)
     table.insert(obj.normals, value)
   end,
@@ -67,12 +67,12 @@ local obj_builders = {
     obj[raw] = brush
     obj.brush = brush
   end,
-  
+
   usemtl = function(obj, raw)
     obj.material = raw
    end,
-  
-  f = function(obj, raw) 
+
+  f = function(obj, raw)
     local brush = obj.brush
     local face = parse_face(raw, obj)
 
@@ -98,7 +98,7 @@ function parser.parse(obj_path)
     local prefix = line:match('([.%S]*)%s')
     local builder = obj_builders[prefix]
 
-    if builder ~= nil then 
+    if builder ~= nil then
       local raw = line:match(prefix .. '%s(.*)')
       builder(obj, raw)
     end
@@ -107,7 +107,7 @@ function parser.parse(obj_path)
   obj.positions = nil
   obj.normals = nil
   obj.uvs = nil
-  
+
   obj.material = nil
   obj.brush = nil
 

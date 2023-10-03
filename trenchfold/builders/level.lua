@@ -1,13 +1,13 @@
 --[[
   level.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
-local config = require 'trenchbroom.config'
+local utils = require 'trenchfold.utils'
+local config = require 'trenchfold.config'
 
 local builder = { }
 
@@ -23,12 +23,12 @@ local function prepare_physics(entity)
     if entity.classname:sub(1, #physics_type) == physics_type then
       physics.type = physics_type
     end
-  end    
+  end
 
   for property, value in pairs(entity) do
     if property:sub(1, 8) == 'physics_' then
       local physics_property = property:sub(9, #property)
-      
+
       if physics_property == 'flags' then
         local flags = utils.flags_from_integer(value or 0)
 
@@ -39,7 +39,7 @@ local function prepare_physics(entity)
       else
         physics[physics_property] = value
       end
-      
+
       entity[property] = nil
     end
   end
@@ -83,7 +83,7 @@ local function prepare_overrides(entity)
   for property, value in pairs(entity) do
     local component_id = property:match('#(.*)%.')
     local component_property = property:match('#.*%.(.*)')
-    
+
     if component_id and component_property then
       overrides[component_id] = overrides[component_id] or { }
       overrides[component_id][component_property] = value
@@ -97,7 +97,7 @@ end
 local function prepare_properties(entity, textel_size)
   local textel_size = textel_size or 1
   local properties = utils.shallow_copy(entity)
-  
+
   properties.id = nil
   properties.classname = nil
   properties.index = nil
@@ -117,7 +117,7 @@ local function prepare_properties(entity, textel_size)
     properties.rotation.y = properties.angle
   end
   properties.angle = nil
-  
+
   for property, _ in pairs(properties) do
     if property:sub(1, 4) == '_tb_' then
       properties[property] = nil
@@ -130,7 +130,7 @@ end
 local function prepare_brushes(entity, obj, mtl, textel_size)
   local textel_size = textel_size or 1
 
-  if not entity.brushes then 
+  if not entity.brushes then
     return nil
   end
 
@@ -148,7 +148,7 @@ local function prepare_brushes(entity, obj, mtl, textel_size)
 
       local obj_brush = obj[brush_id]
       assert(obj_brush, 'Can\'t find the brush \'' .. brush_id .. '\' in .obj file. Looks like the file is outdated. Try to export .obj from TrenchBroom again to get updated geometry.')
-      
+
       local obj_face = obj_brush[index]
       assert(obj_face, 'Can\'t find the face ' .. index .. ' on brush \'' .. brush_id .. '\' in .obj file. Looks like the file is outdated. Try to export .obj from TrenchBroom again to get updated geometry.')
 
@@ -189,7 +189,7 @@ local function prepare_brushes(entity, obj, mtl, textel_size)
       brushes[brush_id] = merged_brush
     end
   end
-  
+
   return brushes
 end
 
@@ -197,7 +197,7 @@ end
 -- Public
 
 function builder.build(map, obj, mtl)
-  local level = { 
+  local level = {
     world = { },
     entities = { },
     preferences = { }
@@ -220,7 +220,7 @@ function builder.build(map, obj, mtl)
 
     if classname == 'worldspawn' then
       entity.properties = entity.properties or { }
-      
+
       level.preferences.textel_size = entity.properties.textel_size
       level.preferences.material = entity.material
       level.preferences.physics = entity.physics
@@ -249,7 +249,7 @@ function builder.build(map, obj, mtl)
 
     if not group then
       group = section[group_id] or { }
-      section[group_id] = group  
+      section[group_id] = group
     end
 
     entity_id = entity_id or map_entity.id
@@ -258,7 +258,7 @@ function builder.build(map, obj, mtl)
       local group_count = utils.count(group)
       entity_id = group_id .. '_' .. (group_count + 1)
     end
-    
+
     entity.id = entity_id
 
     group[entity_id] = entity

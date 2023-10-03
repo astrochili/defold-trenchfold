@@ -1,6 +1,6 @@
 --[[
   config.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
@@ -27,13 +27,13 @@ config.physics_flags = {
 -- Init
 
 function config.init(folder_separator, map_directory, map_name)
-  
+
   -- Arguments
 
   config.folder_separator = folder_separator
   config.map_directory = map_directory
   config.map_name = map_name
-  
+
   -- Paths
 
   config.assets_directory = 'assets'

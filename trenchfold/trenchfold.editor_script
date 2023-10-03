@@ -1,13 +1,13 @@
 --[[
-  trenchbroom.editor_script
-  github.com/astrochili/defold-trenchbroom
+  trenchfold.editor_script
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local config = require 'trenchbroom.config'
-local trenchbroom = require 'trenchbroom.trenchbroom'
+local config = require 'trenchfold.config'
+local trenchfold = require 'trenchfold.trenchfold'
 
 local editor_script = { }
 
@@ -93,7 +93,7 @@ local function map_to_collection(options)
 
   print('')
 
-  trenchbroom.convert()
+  trenchfold.convert()
 end
 
 function editor_script.get_commands()

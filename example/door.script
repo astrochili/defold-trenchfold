@@ -12,7 +12,7 @@ local function open_door(self)
 end
 
 local function close_door(self)
-  go.animate(self.target_url, 'position', go.PLAYBACK_ONCE_FORWARD, self.closed_position, go.EASING_INOUTSINE, 0.25, 0)      
+  go.animate(self.target_url, 'position', go.PLAYBACK_ONCE_FORWARD, self.closed_position, go.EASING_INOUTSINE, 0.25, 0)
 end
 
 --

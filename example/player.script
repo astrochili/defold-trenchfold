@@ -23,7 +23,7 @@ function init(self)
   msg.post('.', hash 'acquire_input_focus')
   msg.post(urls.operator, hash 'follow_point', { object = urls.eyes })
   msg.post(urls.walker, hash 'follow_camera_rotation', { camera = urls.operator })
-  
+
   window.set_listener(handle_window_event)
 end
 

@@ -1,32 +1,32 @@
 --[[
   trenchbroom.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
-local config = require 'trenchbroom.config'
+local utils = require 'trenchfold.utils'
+local config = require 'trenchfold.config'
 
-local map_parser = require 'trenchbroom.parsers.map'
-local obj_parser = require 'trenchbroom.parsers.obj'
-local mtl_parser = require 'trenchbroom.parsers.mtl'
+local map_parser = require 'trenchfold.parsers.map'
+local obj_parser = require 'trenchfold.parsers.obj'
+local mtl_parser = require 'trenchfold.parsers.mtl'
 
-local level_builder = require 'trenchbroom.builders.level'
-local collection_builder = require 'trenchbroom.builders.collection'
-local defold_builder = require 'trenchbroom.builders.defold'
+local level_builder = require 'trenchfold.builders.level'
+local collection_builder = require 'trenchfold.builders.collection'
+local defold_builder = require 'trenchfold.builders.defold'
 
-local trenchbroom = { }
+local trenchfold = { }
 
 --
 -- Local
 
-function trenchbroom.init_config(folder_separator, map_directory, map_name)
+function trenchfold.init_config(folder_separator, map_directory, map_name)
   return config
 end
 
-function trenchbroom.convert()
+function trenchfold.convert()
   print('# TrenchBroom to Defold')
   print('Starting with map \'' .. config.map_directory .. '/' .. config.map_name .. '.map\'')
 
@@ -55,7 +55,7 @@ function trenchbroom.convert()
 
   print('Creating the contents of the files')
   local files = defold_builder.build(instances)
-  
+
   print('\n# Saving the files')
   for _, file in ipairs(files) do
     print('[' .. file.path .. ']')
@@ -65,4 +65,4 @@ function trenchbroom.convert()
   print('\n# Finished!')
 end
 
-return trenchbroom
+return trenchfold

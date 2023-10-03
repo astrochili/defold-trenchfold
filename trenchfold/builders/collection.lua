@@ -1,13 +1,13 @@
 --[[
   collection.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchbroom.utils'
-local config = require 'trenchbroom.config'
+local utils = require 'trenchfold.utils'
+local config = require 'trenchfold.config'
 
 local builder = { }
 
@@ -34,7 +34,7 @@ local function vertices_to_triangles(vertices)
     table.remove(pool, 1)
     table.insert(pool, a)
   end
-  
+
   return triangles
 end
 
@@ -67,7 +67,7 @@ end
 local function append_face_to_convexshape(face, convexshape)
   for _, vertice in ipairs(face.vertices) do
     local x, y, z = vertice.position.x, vertice.position.y, vertice.position.z
-    
+
     convexshape[x .. ' ' .. y .. ' ' .. z] = {
       x = x,
       y = y,
@@ -98,14 +98,14 @@ end
 local function transfer_components_to_go(item, go)
   go.components = item.components or { }
   item.components = nil
-  
+
   return go
 end
 
 local function transfer_overrides_to_go(item, go)
   go.overrides = item.overrides or { }
   item.overrides = nil
-  
+
   return go
 end
 
@@ -168,7 +168,7 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
 
     for face_index, face in ipairs(brush) do
       local physics = utils.shallow_copy(preferences.physics) or { }
-      
+
       for property, value in pairs(go.physics or { }) do
         physics[property] = value
       end
@@ -267,7 +267,7 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
 
     if area_convexshape then
       local area = { }
-      
+
       for _, position in pairs(area_convexshape) do
         table.insert(area, position)
       end
@@ -297,13 +297,13 @@ local function item_to_go(item, preferences, instances)
   go = transfer_overrides_to_go(item, go)
   go, instances = transfer_properties_to_go(item, go, instances)
   go, instances = transfer_brushes_to_go(item, go, instances, preferences)
-  
+
   go.components = next(go.components) and go.components or nil
   go.overrides = next(go.overrides) and go.overrides or nil
 
   if next(item) then
     go.gameobjects = { }
-    
+
     for child_id, child in pairs(item) do
       go.gameobjects[child_id] = item_to_go(child, preferences, instances)
     end
@@ -321,7 +321,7 @@ end
 function builder.build(level)
   local preferences = level.preferences
   level.preferences = nil
-  
+
   local instances = {
     buffer = { },
     mesh = { },
@@ -331,10 +331,10 @@ function builder.build(level)
     script = { }
   }
 
-  local collection, instances = item_to_go(level, preferences, instances)  
+  local collection, instances = item_to_go(level, preferences, instances)
   local full_collection_path = config.full_path(config.map_directory, config.map_name .. '.collection')
   instances.collection[full_collection_path] = collection
-  
+
   return instances
 end
 

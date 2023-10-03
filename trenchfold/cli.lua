@@ -1,14 +1,17 @@
 --[[
   cli.lua
-  github.com/astrochili/defold-trenchbroom
+  github.com/astrochili/defold-trenchfold
 
   Copyright (c) 2022 Roman Silin
   MIT license. See LICENSE for details.
 --]]
 
-local trenchbroom = require 'trenchbroom.trenchbroom'
-local config = require 'trenchbroom.config'
-local utils = require 'trenchbroom.utils'
+assert(arg[1], 'A relative path to the map folder as the 1th argument is required.')
+assert(arg[2], 'A map name as the 2th argument is required.')
+
+local trenchfold = require 'trenchfold.trenchfold'
+local config = require 'trenchfold.config'
+local utils = require 'trenchfold.utils'
 
 local folder_separator = package.config:sub(1, 1)
 config.init(folder_separator, arg[1], arg[2])
@@ -28,4 +31,4 @@ for _, folder in ipairs(folder_to_clean) do
 end
 print('')
 
-trenchbroom.convert()
+trenchfold.convert()
