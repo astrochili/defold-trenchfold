@@ -18,6 +18,11 @@ collection_instances {
     properties {
       id: "operator"
       properties {
+        id: "internal_control"
+        value: "false"
+        type: PROPERTY_TYPE_BOOLEAN
+      }
+      properties {
         id: "maximum"
         value: "89.0, 360.0, 0.0"
         type: PROPERTY_TYPE_VECTOR3

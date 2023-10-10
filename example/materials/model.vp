@@ -1,3 +1,10 @@
+//
+// model.vp
+// github.com/astrochili/defold-trenchfold
+// Copyright (c) 2022 Roman Silin
+// MIT license. See LICENSE for details.
+//
+
 attribute highp vec4 position;
 attribute mediump vec3 normal;
 attribute mediump vec2 texcoord0;

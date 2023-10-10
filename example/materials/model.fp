@@ -1,3 +1,10 @@
+//
+// model.fp
+// github.com/astrochili/defold-trenchfold
+// Copyright (c) 2022 Roman Silin
+// MIT license. See LICENSE for details.
+//
+
 varying highp vec4 var_position;
 varying mediump vec3 var_normal;
 varying mediump vec2 var_texcoord0;

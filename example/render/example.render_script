@@ -1,3 +1,14 @@
+--[[
+  example.render_script
+  github.com/astrochili/defold-trenchfold
+
+  Copyright (c) 2022 Roman Silin
+  MIT license. See LICENSE for details.
+--]]
+
+--
+-- Lifecycle
+
 function init(self)
   self.sky_color = vmath.vector4(0.2, 0.1, 0.1, 1)
 
