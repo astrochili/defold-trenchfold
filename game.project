@@ -33,3 +33,6 @@ update_frequency = 60
 [engine]
 fixed_update_frequency = 60
 
+[script]
+shared_state = 1
+
