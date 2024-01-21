@@ -76,7 +76,9 @@ These actions are separated because of the editor scripts limitation, upvote for
 
 #### Lua Module
 
-There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`. It will do everything, including preparing folders. For example, you can add the launch task to VSCode to run it.
+There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`. It will do everything, including preparing folders in one pass.
+
+For example, there is [`.vscode/launch.json`](.vscode/launch.json) to run `trenchfold/cli.lua` with the `level` map in VS Code. You can try to run it by installing [Defold Kit](https://marketplace.visualstudio.com/items?itemName=astronachos.defold) or just [local-lua-debugger](https://marketplace.visualstudio.com/items?itemName=tomblind.local-lua-debugger-vscode).
 
 ## Textures
 
