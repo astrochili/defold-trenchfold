@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "TrenchFold",
+            "type": "lua-local",
+            "request": "launch",
+            "stopOnEntry": false,
+            "verbose": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "program": {
+                "lua": "lua5.1",
+                "file": "trenchfold/cli.lua",
+            },
+            "args": ["assets/maps/level", "level"]
+        },
+        {
+            "name": "Defold Kit",
+            "type": "lua-local",
+            "request": "launch",
+            "stopOnEntry": false,
+            "verbose": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "program": {
+                "command": "build/defoldkit/dmengine"
+            },
+            "args": [
+                "build/defoldkit/game.projectc"
+            ],
+            "windows": {
+                "program": {
+                    "command": "build\\defoldkit\\dmengine.exe"
+                },
+                "args": [
+                    "build\\defoldkit\\game.projectc"
+                ]
+            },
+            "preLaunchTask": "Defold Kit: Build to Launch"
+        }
+    ]
+}

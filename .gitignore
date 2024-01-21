@@ -9,8 +9,7 @@ Thumbs.db
 log.txt
 
 # VSCode
-/.defold_api
-/.vscode
+/.vscode/settings.json
 
 # Operator
 /operator
