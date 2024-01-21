@@ -115,13 +115,15 @@ function utils.trim(str)
 end
 
 function utils.clear_folder(path)
+  local folder_separator = package.config:sub(1, 1)
+  local is_windows = folder_separator == '\\'
+  local path = path:gsub('/', folder_separator)
+
   local directory = io.open(path, 'r')
   local is_directory_exists = directory ~= nil
 
   if is_directory_exists then
     io.close(directory)
-
-    local is_windows = package.config:sub(1, 1) == '\\'
     local command = is_windows and 'rmdir /s' or 'rm -r'
     os.execute(command .. ' "' .. path .. '"')
   end

@@ -28,6 +28,18 @@ config.physics_flags = {
 
 function config.init(folder_separator, map_directory, map_name)
 
+  -- Clear map_directory from slashes
+
+  local map_directory = map_directory
+
+  if map_directory:sub(-1, -1) == '/' or map_directory:sub(-1, -1) == '\\'  then
+    map_directory = map_directory:sub(1, -2)
+  end
+
+  if map_directory:sub(1, 1) == '/' or map_directory:sub(1, 1) == '\\'  then
+    map_directory = map_directory:sub(2)
+  end
+
   -- Arguments
 
   config.folder_separator = folder_separator
