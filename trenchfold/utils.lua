@@ -11,6 +11,8 @@ local utils = { }
 --
 -- Local
 
+local folder_separator = package.config:sub(1, 1)
+
 local function make_flags_progression()
   local flags = { 1 }
   local max_flag = 0
@@ -114,17 +116,30 @@ function utils.trim(str)
   return str:match( "^%s*(.-)%s*$" )
 end
 
+function utils.is_file_exists(file)
+  local ok, error, code = os.rename(file, file)
+
+  if not ok and code == 13 then
+    return true
+  end
+
+  return ok, error
+end
+
+function utils.is_directory_exists(path)
+  if path:sub(-1, -1) ~= folder_separator  then
+    path = path .. folder_separator
+  end
+
+  return utils.is_file_exists(path .. folder_separator)
+end
+
 function utils.clear_folder(path)
-  local folder_separator = package.config:sub(1, 1)
   local is_windows = folder_separator == '\\'
   local path = path:gsub('/', folder_separator)
 
-  local directory = io.open(path, 'r')
-  local is_directory_exists = directory ~= nil
-
-  if is_directory_exists then
-    io.close(directory)
-    local command = is_windows and 'rmdir /s' or 'rm -r'
+  if utils.is_directory_exists(path) then
+    local command = is_windows and 'rmdir /s /q' or 'rm -r'
     os.execute(command .. ' "' .. path .. '"')
   end
 
@@ -133,6 +148,7 @@ end
 
 function utils.save_file(content, path)
   local file = io.open(path, 'w')
+
   if file == nil then
     assert(file, 'Have you prepared map components folders? Can\'t save a file at path: ' .. path .. '.')
     return false
