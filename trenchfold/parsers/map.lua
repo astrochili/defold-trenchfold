@@ -15,17 +15,18 @@ local parser = { }
 -- Local
 
 local patterns = {
-  meta = '//%s([.%S]*):%s([].%S]*)',
-  group = '//%s([.%S]*)%s(%d*)',
-  property = '"(.*)"%s"(.*)"',
-  vector2 = '([.%S]*) ([.%S]*)',
-  vector3 = '([.%S]*) ([.%S]*) ([.%S]*)',
-  vector4 = '([.%S]*) ([.%S]*) ([.%S]*) ([.%S]*)',
-  face_short = '(%b() %b() %b()) ([.%S]* [.%S]* [.%S]* [.%S]* [.%S]* [.%S]*)',
-  face_long = '(%b() %b() %b()) ([.%S]* [.%S]* [.%S]* [.%S]* [.%S]* [.%S]*) ([.%S]* [.%S]* [.%S]*)',
-  face_planes = '%( ([.%S]* [.%S]* [.%S]*) %) %( ([.%S]* [.%S]* [.%S]*) %) %( ([.%S]* [.%S]* [.%S]*) %)',
-  face_texture = '([.%S]*) ([.%S]*) ([.%S]*) ([.%S]*) ([.%S]*) ([.%S]*)',
-  face_attributes = '([.%S]*) ([.%S]*) ([.%S]*)'
+  etc = '%s?(.*)',
+  meta = '// (%S*): (%S*)',
+  group = '// (%S*) (%d*)',
+  property = '"(.*)" "(.*)"',
+  vector2 = '(%S*) (%S*)',
+  vector3 = '(%S*) (%S*) (%S*)',
+  vector4 = '(%S*) (%S*) (%S*) (%S*)',
+  planes = '%( (%S* %S* %S*) %) %( (%S* %S* %S*) %) %( (%S* %S* %S*) %)',
+  texture_name_quated = '"(.-)"',
+  texture_name = '(%S+)',
+  texture_uv = '(%S*) (%S*) (%S*) (%S*) (%S*)',
+  face_attributes = '(%S*) (%S*) (%S*)'
 }
 
 local function parse_vector(raw)
@@ -138,21 +139,25 @@ function parser.parse(map_path)
 
     -- Read the brush face
 
-    local planes, texture, attributes = line:match(patterns.face_long)
+    local plane_a, plane_b, plane_c, etc = line:match(patterns.planes .. patterns.etc)
 
-    if not attributes then
-      planes, texture = line:match(patterns.face_short)
-    end
-
-    if planes and texture then
+    if plane_a and plane_b and plane_c and etc then
       local face = { }
 
-      local plane_a, plane_b, plane_c = planes:match(patterns.face_planes)
-      local texture, offset_x, offset_y, angle, scale_x, scale_y = texture:match(patterns.face_texture)
+      local texture
+
+      -- Check if the texture name is enclosed in quotes
+      if etc:sub(1,1) == '"' then
+        texture, etc = etc:match(patterns.texture_name_quated .. patterns.etc)
+      else
+        texture, etc = etc:match(patterns.texture_name .. patterns.etc)
+      end
+
+      local offset_x, offset_y, angle, scale_x, scale_y, etc = texture:match(patterns.texture_uv .. patterns.etc)
       local content, surface
 
-      if attributes then
-        content, surface, value = attributes:match(patterns.face_attributes)
+      if etc then
+        content, surface, value = etc:match(patterns.face_attributes)
         value = value ~= '0' and value or nil
       end
 
