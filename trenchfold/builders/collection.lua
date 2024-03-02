@@ -6,6 +6,7 @@
   MIT license. See LICENSE for details.
 --]]
 
+local ext = require 'trenchfold.ext'
 local utils = require 'trenchfold.utils'
 local config = require 'trenchfold.config'
 
@@ -154,6 +155,11 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
   if not item.brushes then
     return go, instances
   end
+
+  -- Shift brushes to the center of the gameobject
+  local center_point = ext.get_brushes_center(item.brushes)
+  ext.apply_offset_to_brushes(item.brushes, center_point)
+  go.position = center_point
 
   local source = { }
   for _, brush in pairs(item.brushes) do
