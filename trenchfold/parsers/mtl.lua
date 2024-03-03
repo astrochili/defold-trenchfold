@@ -22,8 +22,7 @@ function parser.parse(mtl_path)
   local material
 
   for _, line in ipairs(lines) do
-    local prefix = line:match('([.%S]*)%s')
-    local value = line:match(prefix .. '%s(.*)')
+    local prefix, value = line:match('(%S*) (.*)')
 
     if prefix == 'newmtl' then
       material = value

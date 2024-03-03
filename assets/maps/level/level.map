@@ -1259,11 +1259,12 @@
 // entity 4
 {
 "classname" "dynamic"
-"physics_flags" "1"
+"physics_flags" "0"
 "physics_mask" "walker, default"
 "physics_linear_damping" "0.9"
-"physics_friction" "0.05"
+"physics_friction" "0.5"
 "physics_restitution" "0"
+"physics_angular_damping" "0.9"
 // brush 0
 {
 ( 92.40408205773456 -115.31370849898474 160 ) ( 92.6629011028371 -114.34778267269564 160 ) ( 92.40408205773456 -115.31370849898474 161 ) retro/CRATE_1E 56.510376 -32 0 0.9659258 1
