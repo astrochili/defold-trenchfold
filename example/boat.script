@@ -10,6 +10,6 @@
 -- Lifecycle
 
 function init(self)
-  go.set('.', 'euler.x', 0.05)
-  go.animate('.', 'euler.x', go.PLAYBACK_LOOP_PINGPONG, -0.05, go.EASING_INOUTQUAD, 1)
+  local y = go.get_position().y
+  go.animate('.', 'position.y', go.PLAYBACK_LOOP_PINGPONG, y - 0.03, go.EASING_INOUTQUAD, 1)
 end

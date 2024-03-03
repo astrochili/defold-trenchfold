@@ -33,7 +33,7 @@ end
 local function parse_face(source, obj)
   local face = { vertices = { } }
 
-  for i, j, k in source:gmatch('([%d]*)/([%d]*)/([%d]*)') do
+  for i, j, k in source:gmatch('(%d*)/(%d*)/(%d*)') do
     local vertice = {
       position = obj.positions[tonumber(i)],
       normal = obj.normals[tonumber(k)],
@@ -95,7 +95,7 @@ function parser.parse(obj_path)
   local lines = utils.get_lines(content)
 
   for _, line in ipairs(lines) do
-    local prefix = line:match('([.%S]*)%s')
+    local prefix = line:match('(%S*)%s')
     local builder = obj_builders[prefix]
 
     if builder ~= nil then

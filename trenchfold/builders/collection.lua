@@ -155,6 +155,11 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
     return go, instances
   end
 
+  -- Shift brushes to the center of the gameobject
+  local center_point = utils.get_brushes_center(item.brushes)
+  utils.apply_offset_to_brushes(item.brushes, center_point)
+  go.position = center_point
+
   local source = { }
   for _, brush in pairs(item.brushes) do
     table.insert(source, brush)
