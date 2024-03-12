@@ -23,41 +23,6 @@ local function is_command_active(options)
   return is_map
 end
 
-local function make_clean_up_action(paths)
-  local script = ''
-
-  for _, path in ipairs(paths) do
-    if editor.platform == platforms.windows then
-      script = script .. 'if ( Test-Path -Path "' .. path .. '" ) '
-      script = script .. '{ '
-      script = script .. '[void](Remove-Item -Path "' .. path .. '" -Recurse); '
-      script = script .. '};'
-      script = script .. '[void](New-Item -Path "' .. path .. '" -ItemType Directory); '
-      script = script .. 'echo \'Cleaned up `' .. path .. '`\'; '
-    else
-      script = script .. 'if [ -d "' .. path .. '" ]; '
-      script = script .. 'then rm -r "' .. path .. '"; '
-      script = script .. 'fi; '
-      script = script .. 'mkdir ' .. '"' .. path .. '"; '
-      script = script .. 'echo "Cleaned up \'' .. path .. '\'"; ';
-    end
-  end
-
-  local command
-  if editor.platform == platforms.windows then
-    command = { 'powershell', 'Invoke-Command -ScriptBlock { ' .. script .. ' }' }
-  else
-    command = { 'sh', '-c', script }
-  end
-
-  local action = {
-    action = 'shell',
-    command = command
-  }
-
-  return action
-end
-
 local function init_config(options)
   local folder_separator = editor.platform == platforms.windows and '\\' or '/'
 
@@ -68,9 +33,7 @@ local function init_config(options)
   config.init(folder_separator, map_directory, map_name)
 end
 
-local function clean_up_component_folders(options)
-  init_config(options)
-
+local function clean_up_component_folders()
   print('')
   print('# Cleaning up')
 
@@ -81,32 +44,26 @@ local function clean_up_component_folders(options)
     config.collisionobject_directory,
     config.script_directory
   }
-  local actions = {
-    make_clean_up_action(paths)
-  }
 
-  return actions
+  for _, path in ipairs(paths) do
+    local resource_path = '/' .. path
+
+    editor.delete_directory(resource_path)
+    editor.create_directory(resource_path)
+
+    print('Cleaned up \'' .. path .. '\'')
+  end
+
+  print('')
 end
 
 local function map_to_collection(options)
   init_config(options)
-
-  print('')
-
+  clean_up_component_folders()
   trenchfold.convert()
 end
 
 function editor_script.get_commands()
-  local preparing_command = {
-    label = 'Prepare Map Components Folders',
-    locations = { 'Assets' },
-    query = {
-      selection = { type = 'resource', cardinality = 'one' }
-    },
-    active = is_command_active,
-    run = clean_up_component_folders
-  }
-
   local converting_command = {
     label = 'Convert Map to Collection',
     locations = { 'Assets' },
@@ -117,7 +74,7 @@ function editor_script.get_commands()
     run = map_to_collection
   }
 
-  return { preparing_command, converting_command }
+  return { converting_command }
 end
 
 return editor_script
