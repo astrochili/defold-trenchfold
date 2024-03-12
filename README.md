@@ -45,7 +45,7 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 
 To run the example project, you first need to run two editor extension functions on a map file provided, according the [Export and Import](#export-and-import) part.
 
-With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchfold/blob/master/assets/maps/level/level.map) file then click on `Prepare Map Components Folders`. Next right click on the .map file and click `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
+With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchfold/blob/master/assets/maps/level/level.map) file then click on `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
 
 ## Install
 
@@ -67,16 +67,11 @@ It would be possible to skip this step by solving the issue [#1](https://github.
 
 #### Editor Script
 
-Find your `.map` file in the resources pane of the editor and right click on it to see two actions.
-
-1. `Prepare Map Components Folders`. It clears and creates the required folders for file components. It's required to do before the next action.
-2. `Convert Map to Collection`. It does the magic and creates the collection file and all the components files: buffers, meshes, convexshapes, collisionobjects and some scripts.
-
-These actions are separated because of the editor scripts limitation, upvote for the Defold issue [#6810](https://github.com/defold/defold/issues/6810).
+Find your `.map` file in the resources pane of the editor and right click on it and select the `Convert Map to Collection` action. It does the magic and creates the collection file and all the components files: buffers, meshes, convexshapes, collisionobjects and some scripts.
 
 #### Lua Module
 
-There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`. It will do everything, including preparing folders in one pass.
+There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`.
 
 For example, there is [`.vscode/launch.json`](.vscode/launch.json) to run `trenchfold/cli.lua` with the `level` map in VS Code. You can try to run it by installing [Defold Kit](https://marketplace.visualstudio.com/items?itemName=astronachos.defold) or just [local-lua-debugger](https://marketplace.visualstudio.com/items?itemName=tomblind.local-lua-debugger-vscode).
 
