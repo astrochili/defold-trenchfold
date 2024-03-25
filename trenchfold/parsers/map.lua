@@ -153,7 +153,7 @@ function parser.parse(map_path)
         texture, etc = etc:match(patterns.texture_name .. patterns.etc)
       end
 
-      local offset_x, offset_y, angle, scale_x, scale_y, etc = texture:match(patterns.texture_uv .. patterns.etc)
+      local offset_x, offset_y, angle, scale_x, scale_y, etc = etc:match(patterns.texture_uv .. patterns.etc)
       local content, surface
 
       if etc then
