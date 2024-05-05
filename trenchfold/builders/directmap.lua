@@ -265,6 +265,9 @@ end
 
 -- -----------------------------------------------------------------------
 local function getmtlobj(map)
+    
+    png_infos = {}
+    
     -- table.save(map, "test-map.lua")
 
     local mtl = generatemtl(map)
