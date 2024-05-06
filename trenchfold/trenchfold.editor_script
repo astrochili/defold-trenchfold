@@ -63,6 +63,12 @@ local function map_to_collection(options)
   trenchfold.convert()
 end
 
+local function direct_map_to_collection(options)
+  init_config(options)
+  clean_up_component_folders()
+  trenchfold.direct_convert()
+end
+
 function editor_script.get_commands()
   local converting_command = {
     label = 'Convert Map to Collection',
@@ -73,8 +79,17 @@ function editor_script.get_commands()
     active = is_command_active,
     run = map_to_collection
   }
+  local direct_command = {
+    label = 'Direct Map to Collection',
+    locations = { 'Assets' },
+    query = {
+      selection = { type = 'resource', cardinality = 'one' }
+    },
+    active = is_command_active,
+    run = direct_map_to_collection
+  }  
 
-  return { converting_command }
+  return { converting_command, direct_command }
 end
 
 return editor_script
