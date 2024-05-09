@@ -146,6 +146,12 @@ local function readInt(fh)
     return b1 * 16777216 + b2 * 65536 + b3 * 256 + b4
 end
 
+local function readShort(fh)
+  local b1 = readByte(fh)
+  local b2 = readByte(fh)
+  return b1 * 256 + b2
+end
+
 -- -----------------------------------------------------------------------
 -- PNG header loader
 local function getpngfile(filenamepath)
@@ -158,7 +164,7 @@ local function getpngfile(filenamepath)
     local pnginfo = {}
     local filesig = fh:read(8)
     if (filesig == string.format("%c%c%c%c%c%c%c%c", 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)) then
-        local tmp = fh:read(8) -- we dont care about length and chunktype (iHDR is always first)
+        fh:seek('cur', 8) -- we dont care about length and chunktype (iHDR is always first)
         pnginfo.width = readInt(fh)
         pnginfo.height = readInt(fh)
         pnginfo.depth = readByte(fh)
@@ -173,6 +179,59 @@ local function getpngfile(filenamepath)
     return nil
 end
 
+local function getjpgfile(filenamepath)
+      -- Try to open first - return nil if unsuccessful
+      local fh = io.open(filenamepath, 'rb')
+      if (fh == nil) then
+          print("[Error] jpg file not found: " .. filenamepath)
+          return nil
+      end
+
+      local jpginfo = {}
+      local data_length = fh:seek('end')
+      fh:seek('set')
+
+      if not fh:read(4) == string.format('%c%c%c%c', 0xff, 0xd8, 0xff, 0xe0) then
+        -- Not a valid SOI header
+        return nil
+      end
+
+      local block_length = readShort(fh)
+
+      if not fh:read(5) == string.format('JFIF%c', 0x00) then
+        -- Not a valid JFIF string
+        return nil
+      end
+
+      fh:seek('cur', -7)
+
+      while fh:seek() < data_length do
+        fh:seek('cur', block_length)
+
+        local marker = fh:read(2)
+
+        -- Check that we are truly at the start of another block
+        if marker:sub(1, 1) ~= string.format('%c', 0xff) then
+          break
+        end
+
+        -- 0xFFC0 is the "Start of frame" marker which contains the file size
+        if marker:sub(2, 2) == string.format('%c', 0xc0) then
+          -- The structure of the 0xFFC0 block is quite simple
+          -- [0xFFC0][ushort length][uchar precision][ushort x][ushort y]
+          fh:seek('cur', 3)
+
+          jpginfo.height = readShort(fh)
+          jpginfo.width = readShort(fh)
+
+          return jpginfo
+        else
+          block_length = readShort(fh)
+          fh:seek('cur', -2)
+        end
+      end
+end
+
 
 -- -----------------------------------------------------------------------
 -- Check paths for images (collect sizes as well) - only png supported
@@ -181,10 +240,21 @@ local function getimagepath(mtlpath, entpaths, texname)
     -- Check master first
     local testpath = mtlpath .. tostring(texname) .. imagetype
     local pnginfo = getpngfile("assets/" .. testpath)
+
     if (pnginfo) then
         pnginfo.filename = testpath
         return pnginfo
+    else
+      imagetype = ".jpg"
+      testpath = mtlpath .. tostring(texname) .. imagetype
+      local jpginfo = getjpgfile("assets/" .. testpath)
+
+      if jpginfo then
+        jpginfo.filename = testpath
+        return jpginfo
+      end
     end
+
     -- If we get here then the main path didnt find the file
     if (entpaths) then
         for k, v in pairs(entpaths) do
@@ -220,7 +290,7 @@ local function generatemtl(map)
             for bi, brush in pairs(ent.brushes) do
                 for fi, face in pairs(brush.faces) do
                     local tex = face.texture
-                    if tex then
+                    if tex and not tex.name:match('flags/(.*)') then
                         if png_infos[tex.name] == nil then
                             -- Find resource (texture) and then append approritate path
                             local pnginfo = getimagepath(mtlpath, entpaths, tex.name)
@@ -265,9 +335,9 @@ end
 
 -- -----------------------------------------------------------------------
 local function getmtlobj(map)
-    
+
     png_infos = {}
-    
+
     -- table.save(map, "test-map.lua")
 
     local mtl = generatemtl(map)

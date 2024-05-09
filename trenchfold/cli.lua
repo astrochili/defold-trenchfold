@@ -31,4 +31,4 @@ for _, folder in ipairs(folder_to_clean) do
 end
 print('')
 
-trenchfold.convert()
+trenchfold.direct_convert()
