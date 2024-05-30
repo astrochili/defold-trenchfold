@@ -6,20 +6,24 @@
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchfold.utils'
-local config = require 'trenchfold.config'
+local table_insert = table.insert
+local table_remove = table.remove
 
-local builder = { }
+local utils = require 'trenchfold.utils.utils'
+local vec = require 'trenchfold.utils.vec'
+local config = require 'trenchfold.utils.config'
+
+local builder = {}
 
 --
 -- Buffer
 
 local function vertices_to_triangles(vertices)
-  local pool = { }
-  local triangles = { }
+  local pool = {}
+  local triangles = {}
 
   for _, vertice in ipairs(vertices) do
-    table.insert(pool, vertice)
+    table_insert(pool, vertice)
   end
 
   while #pool >= 3 do
@@ -28,33 +32,33 @@ local function vertices_to_triangles(vertices)
     local c = pool[3]
 
     local triangle = { a, b, c }
-    table.insert(triangles, triangle)
+    table_insert(triangles, triangle)
 
-    table.remove(pool, 1)
-    table.remove(pool, 1)
-    table.insert(pool, a)
+    table_remove(pool, 1)
+    table_remove(pool, 1)
+    table_insert(pool, a)
   end
 
   return triangles
 end
 
 local function append_face_to_buffer(face, buffer)
-  buffer.position = buffer.position or { count = 3, data = { } }
-  buffer.normal = buffer.normal or { count = 3, data = { } }
-  buffer.texcoord0 = buffer.texcoord0 or { count = 2, data = { } }
+  buffer.position = buffer.position or { count = 3, data = {} }
+  buffer.normal = buffer.normal or { count = 3, data = {} }
+  buffer.texcoord0 = buffer.texcoord0 or { count = 2, data = {} }
 
   local triangles = vertices_to_triangles(face.vertices)
 
   for _, triangle in ipairs(triangles) do
     for _, vertice in ipairs(triangle) do
-      table.insert(buffer.position.data, vertice.position.x)
-      table.insert(buffer.position.data, vertice.position.y)
-      table.insert(buffer.position.data, vertice.position.z)
-      table.insert(buffer.normal.data, vertice.normal.x)
-      table.insert(buffer.normal.data, vertice.normal.y)
-      table.insert(buffer.normal.data, vertice.normal.z)
-      table.insert(buffer.texcoord0.data, vertice.uv.x)
-      table.insert(buffer.texcoord0.data, vertice.uv.y)
+      table_insert(buffer.position.data, vertice.position.x)
+      table_insert(buffer.position.data, vertice.position.y)
+      table_insert(buffer.position.data, vertice.position.z)
+      table_insert(buffer.normal.data, vertice.normal.x)
+      table_insert(buffer.normal.data, vertice.normal.y)
+      table_insert(buffer.normal.data, vertice.normal.z)
+      table_insert(buffer.texcoord0.data, vertice.uv.x)
+      table_insert(buffer.texcoord0.data, vertice.uv.y)
     end
   end
 
@@ -96,14 +100,14 @@ local function transfer_material_to_go(item, go)
 end
 
 local function transfer_components_to_go(item, go)
-  go.components = item.components or { }
+  go.components = item.components or {}
   item.components = nil
 
   return go
 end
 
 local function transfer_overrides_to_go(item, go)
-  go.overrides = item.overrides or { }
+  go.overrides = item.overrides or {}
   item.overrides = nil
 
   return go
@@ -113,7 +117,7 @@ end
 local function transfer_properties_to_script(properties, go, instances)
   local full_script_path = config.full_path(config.script_directory, go.id .. '.script')
   local script = instances.script[full_script_path] or {
-    properties = { }
+    properties = {}
   }
 
   for property, value in pairs(properties) do
@@ -156,28 +160,29 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
   end
 
   -- Shift brushes to the center of the gameobject
-  local center_point = utils.get_brushes_center(item.brushes)
-  utils.apply_offset_to_brushes(item.brushes, center_point)
+  local center_point = vec.get_brushes_center(item.brushes)
+  vec.apply_offset_to_brushes(item.brushes, center_point)
   go.position = center_point
 
-  local source = { }
+  local source = {}
   for _, brush in pairs(item.brushes) do
-    table.insert(source, brush)
+    table_insert(source, brush)
   end
   item.brushes = nil
 
-  local areas = { }
+  local areas = {}
 
   for brush_index, brush in ipairs(source) do
     local area_convexshape
 
     for face_index, face in ipairs(brush) do
-      local physics = utils.shallow_copy(preferences.physics) or { }
+      local physics = utils.shallow_copy(preferences.physics) or {}
 
-      for property, value in pairs(go.physics or { }) do
+      for property, value in pairs(go.physics or {}) do
         physics[property] = value
       end
 
+      ---@type string|nil
       local collision_type = physics.type or 'static'
       local is_mesh = true
 
@@ -190,7 +195,7 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
       elseif face.is_area then
         is_mesh = false
         collision_type = nil
-        area_convexshape = append_face_to_convexshape(face, area_convexshape or { })
+        area_convexshape = append_face_to_convexshape(face, area_convexshape or {})
       elseif face.is_unused then
         is_mesh = false
         collision_type = nil
@@ -201,18 +206,19 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
       end
 
       if is_mesh then
-        local id = go.id .. '_' .. face.texture.name:gsub('/', '_')
+        local id = go.id .. '_' .. face.texture.id:gsub('/', '_')
         local full_buffer_path = config.full_path(config.buffer_directory, id .. '.buffer')
-        local full_mesh_path = config.full_path(config.mesh_directory,  id .. '.mesh')
+        local full_mesh_path = config.full_path(config.mesh_directory, id .. '.mesh')
 
-        local buffer = instances.buffer[full_buffer_path] or { }
+        local buffer = instances.buffer[full_buffer_path] or {}
         buffer = append_face_to_buffer(face, buffer)
         instances.buffer[full_buffer_path] = buffer
 
         local mesh = instances.mesh[full_mesh_path] or {
-          material = (go.material or { }).material or preferences.material.material or '/builtins/materials/model.material',
+          material = (go.material or {}).material or preferences.material.material or
+          '/builtins/materials/model.material',
           buffer = config.resource_path(full_buffer_path),
-          texture0 = config.resource_path(config.assets_directory, face.texture.path)
+          texture0 = config.resource_path(face.texture.path)
         }
 
         local texture0_directory = mesh.texture0:match('(.*)/')
@@ -221,11 +227,12 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
 
         for index = 1, 7 do
           local texture_key = 'texture' .. index
-          local texture = (go.material or { })[texture_key] or preferences.material[texture_key]
+          local texture = (go.material or {})[texture_key] or preferences.material[texture_key]
 
           if texture and texture:find('*') then
             local texture_directory = texture:match('(.*)/') or texture0_directory
-            local texture_filename = texture:match('.*/(.*)%.') or texture:match('.*/(.*)') or texture:match('(.*)%.') or texture
+            local texture_filename = texture:match('.*/(.*)%.') or texture:match('.*/(.*)') or texture:match('(.*)%.') or
+            texture
             local texture_extension = texture:match('.*%.(.*)') or texture0_extension
 
             texture_filename = texture_filename:gsub('*', texture0_filename)
@@ -245,9 +252,9 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
         id = id .. '_' .. collision_type
 
         local full_convexshape_path = config.full_path(config.convexshape_directory, id .. '.convexshape')
-        local full_collisionobject_path = config.full_path(config.collisionobject_directory,  id .. '.collisionobject')
+        local full_collisionobject_path = config.full_path(config.collisionobject_directory, id .. '.collisionobject')
 
-        local convexshape = instances.convexshape[full_convexshape_path] or { }
+        local convexshape = instances.convexshape[full_convexshape_path] or {}
         convexshape = append_face_to_convexshape(face, convexshape)
         instances.convexshape[full_convexshape_path] = convexshape
 
@@ -271,13 +278,13 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
     end
 
     if area_convexshape then
-      local area = { }
+      local area = {}
 
       for _, position in pairs(area_convexshape) do
-        table.insert(area, position)
+        table_insert(area, position)
       end
 
-      table.insert(areas, area)
+      table_insert(areas, area)
     end
   end
 
@@ -290,7 +297,7 @@ local function transfer_brushes_to_go(item, go, instances, preferences)
 end
 
 local function item_to_go(item, preferences, instances)
-  local go = { }
+  local go = {}
   local instances = instances
 
   go.id = item.id
@@ -307,12 +314,13 @@ local function item_to_go(item, preferences, instances)
   go.overrides = next(go.overrides) and go.overrides or nil
 
   if next(item) then
-    go.gameobjects = { }
+    go.gameobjects = {}
 
     for child_id, child in pairs(item) do
       go.gameobjects[child_id] = item_to_go(child, preferences, instances)
     end
   end
+
 
   go.id = nil
   go.physics = nil
@@ -328,12 +336,12 @@ function builder.build(level)
   level.preferences = nil
 
   local instances = {
-    buffer = { },
-    mesh = { },
-    convexshape = { },
-    collisionobject = { },
-    collection = { },
-    script = { }
+    buffer = {},
+    mesh = {},
+    convexshape = {},
+    collisionobject = {},
+    collection = {},
+    script = {}
   }
 
   local collection, instances = item_to_go(level, preferences, instances)

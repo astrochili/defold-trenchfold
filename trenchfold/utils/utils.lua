@@ -6,7 +6,9 @@
   MIT license. See LICENSE for details.
 --]]
 
-local utils = { }
+local math_min = math.min
+
+local utils = {}
 
 --
 -- Local
@@ -32,7 +34,7 @@ local flags, max_flag = make_flags_progression()
 -- Public
 
 function utils.keys(source)
-  local keys = { }
+  local keys = {}
   local index = 0
 
   for key, _ in pairs(source) do
@@ -57,10 +59,10 @@ end
 
 function utils.flags_from_integer(integer)
   if integer < 1 then
-    return { }
+    return {}
   end
 
-  local integer = math.min(integer, max_flag)
+  local integer = math_min(integer, max_flag)
   local lower_flag = nil
 
   for index = 1, #flags do
@@ -99,7 +101,7 @@ function utils.shallow_copy(orig)
     return nil
   end
 
-  local copy = { }
+  local copy = {}
 
   for key, value in pairs(orig) do
     copy[key] = value
@@ -113,21 +115,22 @@ function utils.has_prefix(str, prefix)
 end
 
 function utils.trim(str)
-  return str:match( "^%s*(.-)%s*$" )
+  return str:match("^%s*(.-)%s*$")
 end
 
 function utils.is_file_exists(file)
-  local ok, error, code = os.rename(file, file)
+  local file = io.open(file, 'r')
 
-  if not ok and code == 13 then
+  if file then
+    file:close()
     return true
   end
 
-  return ok, error
+  return false
 end
 
 function utils.is_directory_exists(path)
-  if path:sub(-1, -1) ~= folder_separator  then
+  if path:sub(-1, -1) ~= folder_separator then
     path = path .. folder_separator
   end
 
@@ -171,60 +174,13 @@ function utils.read_file(path)
 end
 
 function utils.get_lines(content)
-  local lines = { }
+  local lines = {}
 
   for line in content:gmatch '[^\r\n]+' do
     table.insert(lines, line)
   end
 
   return lines
-end
-
-
--- Returns the center point of the brushes
----@param brushes table Brushes
----@return table result Center
-function utils.get_brushes_center(brushes)
-  local min = { x = math.huge, y = math.huge, z = math.huge }
-  local max = { x = -math.huge, y = -math.huge, z = -math.huge }
-
-  -- go through all brushes and faces to find min and max vertex coordinates
-  for _, brush in pairs(brushes) do
-      for _, face in ipairs(brush) do
-          for _, vertex in ipairs(face.vertices) do
-              local v = vertex.position
-              min.x = math.min(min.x, v.x)
-              min.y = math.min(min.y, v.y)
-              min.z = math.min(min.z, v.z)
-              max.x = math.max(max.x, v.x)
-              max.y = math.max(max.y, v.y)
-              max.z = math.max(max.z, v.z)
-          end
-      end
-  end
-
-  -- calculate and return the center point
-  return {
-      x = (min.x + max.x) / 2,
-      y = (min.y + max.y) / 2,
-      z = (min.z + max.z) / 2
-  }
-end
-
-
--- Applies the offset to the brushes positions
----@param brushes table Brushes
----@param offset table Offset
-function utils.apply_offset_to_brushes(brushes, offset)
-  for _, brush in pairs(brushes) do
-      for _, face in ipairs(brush) do
-          for _, vertex in ipairs(face.vertices) do
-              vertex.position.x = vertex.position.x - offset.x
-              vertex.position.y = vertex.position.y - offset.y
-              vertex.position.z = vertex.position.z - offset.z
-          end
-      end
-  end
 end
 
 return utils

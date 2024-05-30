@@ -6,10 +6,10 @@
   MIT license. See LICENSE for details.
 --]]
 
-local config = require 'trenchfold.config'
+local config = require 'trenchfold.utils.config'
 local trenchfold = require 'trenchfold.trenchfold'
 
-local editor_script = { }
+local editor_script = {}
 
 local platforms = {
   windows = 'x86_64-win32',

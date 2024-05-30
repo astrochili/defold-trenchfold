@@ -6,7 +6,7 @@
   MIT license. See LICENSE for details.
 --]]
 
-local config = { }
+local config = {}
 
 --
 -- Flags
@@ -16,7 +16,7 @@ config.content_flags = {
   [2] = 'is_separated'
 }
 
-config.surface_flags = { }
+config.surface_flags = {}
 
 config.physics_flags = {
   [1] = 'is_rotation_locked',
@@ -27,16 +27,15 @@ config.physics_flags = {
 -- Init
 
 function config.init(folder_separator, map_directory, map_name)
-
   -- Clear map_directory from slashes
 
   local map_directory = map_directory
 
-  if map_directory:sub(-1, -1) == '/' or map_directory:sub(-1, -1) == '\\'  then
+  if map_directory:sub(-1, -1) == '/' or map_directory:sub(-1, -1) == '\\' then
     map_directory = map_directory:sub(1, -2)
   end
 
-  if map_directory:sub(1, 1) == '/' or map_directory:sub(1, 1) == '\\'  then
+  if map_directory:sub(1, 1) == '/' or map_directory:sub(1, 1) == '\\' then
     map_directory = map_directory:sub(2)
   end
 
@@ -48,7 +47,6 @@ function config.init(folder_separator, map_directory, map_name)
 
   -- Paths
 
-  config.assets_directory = 'assets'
   config.buffer_directory = config.map_directory .. '/buffer'
   config.mesh_directory = config.map_directory .. '/mesh'
   config.collisionobject_directory = config.map_directory .. '/collisionobject'

@@ -21,7 +21,7 @@ collection_instances {
 }
 collection_instances {
   id: "level"
-  collection: "/assets/maps/level/level.collection"
+  collection: "/example/maps/level/level.collection"
   position {
     x: 0.0
     y: 0.0

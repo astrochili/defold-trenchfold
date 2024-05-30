@@ -6,16 +6,17 @@
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchfold.utils'
-local config = require 'trenchfold.config'
+local utils = require 'trenchfold.utils.utils'
+local config = require 'trenchfold.utils.config'
+local sculptor = require 'trenchfold.designers.sculptor'
 
-local builder = { }
+local designer = {}
 
 --
 -- Local
 
 local function prepare_physics(entity)
-  local physics = { }
+  local physics = {}
 
   local physics_types = { 'static', 'trigger', 'kinematic', 'dynamic' }
 
@@ -64,7 +65,7 @@ local function prepare_material(entity)
 end
 
 local function prepare_components(entity)
-  local components = { }
+  local components = {}
 
   for property, value in pairs(entity) do
     if property:sub(1, 1) == '#' and property:find('%.') == nil then
@@ -78,14 +79,14 @@ local function prepare_components(entity)
 end
 
 local function prepare_overrides(entity)
-  local overrides = { }
+  local overrides = {}
 
   for property, value in pairs(entity) do
     local component_id = property:match('#(.*)%.')
     local component_property = property:match('#.*%.(.*)')
 
     if component_id and component_property then
-      overrides[component_id] = overrides[component_id] or { }
+      overrides[component_id] = overrides[component_id] or {}
       overrides[component_id][component_property] = value
       entity[property] = nil
     end
@@ -96,7 +97,7 @@ end
 
 local function prepare_properties(entity, textel_size)
   local textel_size = textel_size or 1
-  local properties = utils.shallow_copy(entity)
+  local properties = utils.shallow_copy(entity) or {}
 
   properties.id = nil
   properties.classname = nil
@@ -127,80 +128,14 @@ local function prepare_properties(entity, textel_size)
   return next(properties) and properties or nil
 end
 
-local function prepare_brushes(entity, obj, mtl, textel_size)
-  local textel_size = textel_size or 1
-
-  if not entity.brushes then
-    return nil
-  end
-
-  local brushes = { }
-
-  for _, brush in ipairs(entity.brushes) do
-    local brush_id = 'entity' .. entity.index .. '_brush' .. brush.index
-    local merged_brush = { }
-
-    for index, map_face in ipairs(brush.faces) do
-      local face = utils.shallow_copy(map_face)
-
-      face.planes = nil
-      face.vertices = { }
-
-      local obj_brush = obj[brush_id]
-      assert(obj_brush, 'Can\'t find the brush \'' .. brush_id .. '\' in .obj file. Looks like the file is outdated. Try to export .obj from TrenchBroom again to get updated geometry.')
-
-      local obj_face = obj_brush[index]
-      assert(obj_face, 'Can\'t find the face ' .. index .. ' on brush \'' .. brush_id .. '\' in .obj file. Looks like the file is outdated. Try to export .obj from TrenchBroom again to get updated geometry.')
-
-      for _, obj_vertice in ipairs(obj_face.vertices) do
-        local vertice = {
-          normal = utils.shallow_copy(obj_vertice.normal),
-          position = utils.shallow_copy(obj_vertice.position),
-          uv = utils.shallow_copy(obj_vertice.uv)
-        }
-
-        vertice.position.x = vertice.position.x / textel_size
-        vertice.position.y = vertice.position.y / textel_size
-        vertice.position.z = vertice.position.z / textel_size
-
-        table.insert(face.vertices, vertice)
-      end
-
-      local texture = obj_face.material
-      local texture_is_empty = texture == '__TB_empty'
-      local texture_flag = texture_is_empty and 'unused' or texture:match('flags/(.*)')
-
-      face.is_unused = texture_flag == 'unused' or nil
-      face.is_area = texture_flag == 'area' or nil
-      face.is_clip = texture_flag == 'clip' or nil
-      face.is_trigger = texture_flag == 'trigger' or nil
-
-      if not texture_flag then
-        face.texture = {
-          name = texture,
-          path = mtl[texture]
-        }
-      end
-
-      table.insert(merged_brush, face)
-    end
-
-    if #merged_brush > 0 then
-      brushes[brush_id] = merged_brush
-    end
-  end
-
-  return brushes
-end
-
 --
 -- Public
 
-function builder.build(map, obj, mtl)
+function designer.design(map)
   local level = {
-    world = { },
-    entities = { },
-    preferences = { }
+    world = {},
+    entities = {},
+    preferences = {}
   }
 
   for _, map_entity in pairs(map.entities) do
@@ -219,7 +154,7 @@ function builder.build(map, obj, mtl)
     local entity_id
 
     if classname == 'worldspawn' then
-      entity.properties = entity.properties or { }
+      entity.properties = entity.properties or {}
 
       level.preferences.textel_size = entity.properties.textel_size
       level.preferences.material = entity.material
@@ -238,17 +173,18 @@ function builder.build(map, obj, mtl)
       if group[entity_id] then
         local group_index = tostring(map_entity._tb_id)
         local safe_id = entity_id .. '_' .. group_index
-        print('[!] Looks like you have few groups with the same name \'' .. entity_id .. '\'. Renamed to ' .. '\'' .. safe_id .. '\'.')
+        print('[!] Looks like you have few groups with the same name \'' ..
+          entity_id .. '\'. Renamed to ' .. '\'' .. safe_id .. '\'.')
         entity_id = safe_id
       end
     else
       section = level.entities
     end
 
-    entity.brushes = prepare_brushes(map_entity, obj, mtl, level.preferences.textel_size)
+    entity.brushes = sculptor.make_brushes(map_entity, level.preferences.textel_size)
 
     if not group then
-      group = section[group_id] or { }
+      group = section[group_id] or {}
       section[group_id] = group
     end
 
@@ -276,4 +212,4 @@ function builder.build(map, obj, mtl)
   return level
 end
 
-return builder
+return designer

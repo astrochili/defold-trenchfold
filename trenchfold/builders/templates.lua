@@ -6,7 +6,7 @@
   MIT license. See LICENSE for details.
 --]]
 
-local templates = { }
+local templates = {}
 
 templates.collection = [[
 name: "_ID_"
@@ -109,12 +109,12 @@ templates.component_property = [[
 ]]
 
 templates.property_type = {
-  number = 'PROPERTY_TYPE_NUMBER', -- "1.0"
+  number = 'PROPERTY_TYPE_NUMBER',   -- "1.0"
   vector3 = 'PROPERTY_TYPE_VECTOR3', -- "1.0, 1.0, 1.0"
   vector4 = 'PROPERTY_TYPE_VECTOR4', -- "1.0, 1.0, 1.0, 1.0"
   boolean = 'PROPERTY_TYPE_BOOLEAN', -- "false" / "true"
-  hash = 'PROPERTY_TYPE_HASH', -- "hash"
-  url = 'PROPERTY_TYPE_URL' -- "url"
+  hash = 'PROPERTY_TYPE_HASH',       -- "hash"
+  url = 'PROPERTY_TYPE_URL'          -- "url"
 }
 
 return templates

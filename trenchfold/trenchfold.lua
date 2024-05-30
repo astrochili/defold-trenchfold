@@ -6,18 +6,23 @@
   MIT license. See LICENSE for details.
 --]]
 
-local utils = require 'trenchfold.utils'
-local config = require 'trenchfold.config'
+local utils = require 'trenchfold.utils.utils'
+local config = require 'trenchfold.utils.config'
 
 local map_parser = require 'trenchfold.parsers.map'
-local obj_parser = require 'trenchfold.parsers.obj'
-local mtl_parser = require 'trenchfold.parsers.mtl'
-
-local level_builder = require 'trenchfold.builders.level'
+local level_designer = require 'trenchfold.designers.level'
 local collection_builder = require 'trenchfold.builders.collection'
 local defold_builder = require 'trenchfold.builders.defold'
 
 local trenchfold = { }
+local errors = {}
+
+--
+-- Global
+
+function log_error(error)
+  table.insert(errors, error)
+end
 
 --
 -- Local
@@ -37,20 +42,12 @@ function trenchfold.convert()
   print('Parsing \'' .. map_path .. '\'')
   local map = map_parser.parse(map_path)
 
-  local obj_path = file_path .. '.obj'
-  print('Parsing \'' .. obj_path .. '\'')
-  local obj = obj_parser.parse(obj_path)
-
-  local mtl_path = file_path .. '.mtl'
-  print('Parsing \'' .. mtl_path .. '\'')
-  local mtl = mtl_parser.parse(mtl_path)
-
   print('\n# Building')
 
   print('Putting all the data together')
-  local level = level_builder.build(map, obj, mtl)
+  local level = level_designer.design(map)
 
-  print('Building the collection model')
+  print('Building the collection structure')
   local instances = collection_builder.build(level)
 
   print('Creating the contents of the files')
@@ -62,7 +59,15 @@ function trenchfold.convert()
     utils.save_file(file.content, file.path)
   end
 
-  print('\n# Finished!')
+  if #errors > 0 then
+    print('\n# Finished with errors:')
+
+    for _, error in ipairs(errors) do
+      print('- ' .. error)
+    end
+  else
+    print('\n# Finished!')
+  end
 end
 
 return trenchfold
