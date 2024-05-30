@@ -6,10 +6,17 @@
   MIT license. See LICENSE for details.
 --]]
 
-local config = require 'trenchfold.config'
+local table_insert = table.insert
+local table_concat = table.concat
+local table_sort = table.sort
+local math_rad = math.rad
+local math_sin = math.sin
+local math_cos = math.cos
+
+local config = require 'trenchfold.utils.config'
 local templates = require 'trenchfold.builders.templates'
 
-local builder = { }
+local builder = {}
 
 --
 -- Helpers
@@ -19,16 +26,16 @@ local function quat_from_euler(euler)
     return { x = 0, y = 0, z = 0, w = 1 }
   end
 
-  local x = math.rad(euler.x)
-  local y = math.rad(euler.y)
-  local z = math.rad(euler.z)
+  local x = math_rad(euler.x)
+  local y = math_rad(euler.y)
+  local z = math_rad(euler.z)
 
-  local sr = math.sin(x / 2)
-  local sp = math.sin(y / 2)
-  local sy = math.sin(z / 2)
-  local cr = math.cos(x / 2)
-  local cp = math.cos(y / 2)
-  local cy = math.cos(z / 2)
+  local sr = math_sin(x / 2)
+  local sp = math_sin(y / 2)
+  local sy = math_sin(z / 2)
+  local cr = math_cos(x / 2)
+  local cp = math_cos(y / 2)
+  local cy = math_cos(z / 2)
 
   local quat = {
     x = sr * cp * cy - cr * sp * sy,
@@ -86,14 +93,14 @@ end
 -- Buffer
 
 local function make_buffer_body(buffer)
-  local stream_bodies = { }
+  local stream_bodies = {}
 
   local function stream_to_json(name, stream)
     local stream_body = ''
     stream_body = stream_body .. '    "name": "' .. name .. '",\n'
     stream_body = stream_body .. '    "type": "float32",\n'
     stream_body = stream_body .. '    "count": ' .. stream.count .. ',\n'
-    stream_body = stream_body .. '    "data": [\n        ' .. table.concat(stream.data, ',') .. '\n    ]'
+    stream_body = stream_body .. '    "data": [\n        ' .. table_concat(stream.data, ',') .. '\n    ]'
 
     return '{\n' .. stream_body .. '\n}'
   end
@@ -101,12 +108,12 @@ local function make_buffer_body(buffer)
   for name, stream in pairs(buffer) do
     if #stream.data > 0 then
       local stream_body = stream_to_json(name, stream)
-      table.insert(stream_bodies, stream_body)
+      table_insert(stream_bodies, stream_body)
     end
   end
 
-  table.sort(stream_bodies, function(a, b) return a < b end)
-  local body = '[\n' .. table.concat(stream_bodies, ',\n') .. '\n]'
+  table_sort(stream_bodies, function(a, b) return a < b end)
+  local body = '[\n' .. table_concat(stream_bodies, ',\n') .. '\n]'
 
   return body
 end
@@ -118,13 +125,13 @@ local function make_mesh_body(mesh)
   local body = ''
 
   body = body .. 'material: "' .. mesh.material .. '"\n'
-  body = body .. 'vertices: "'.. mesh.buffer .. '"\n'
+  body = body .. 'vertices: "' .. mesh.buffer .. '"\n'
 
   for index = 0, 7 do
     local texture = mesh['texture' .. index]
 
     if texture then
-      body = body .. 'textures: "'.. texture .. '"\n'
+      body = body .. 'textures: "' .. texture .. '"\n'
     end
   end
 
@@ -161,12 +168,12 @@ local function make_collisionobject_body(collision_object)
   local body = ''
 
   body = body .. 'collision_shape: "' .. collision_object.collision_shape .. '"\n'
-  body = body .. 'type: '.. collision_types[collision_object.type] .. '\n'
+  body = body .. 'type: ' .. collision_types[collision_object.type] .. '\n'
   body = body .. 'mass: ' .. make_float_body(collision_object.mass) .. '\n'
-  body = body .. 'friction: ' .. make_float_body(collision_object.friction) ..'\n'
+  body = body .. 'friction: ' .. make_float_body(collision_object.friction) .. '\n'
   body = body .. 'restitution: ' .. make_float_body(collision_object.restitution) .. '\n'
-  body = body .. 'group: "' .. collision_object.group ..'"\n'
-  body = body .. 'mask: "' .. collision_object.mask ..'"\n'
+  body = body .. 'group: "' .. collision_object.group .. '"\n'
+  body = body .. 'mask: "' .. collision_object.mask .. '"\n'
   body = body .. 'linear_damping: ' .. make_float_body(collision_object.linear_damping) .. '\n'
   body = body .. 'angular_damping: ' .. make_float_body(collision_object.angular_damping) .. '\n'
   body = body .. 'locked_rotation: ' .. tostring(collision_object.locked_rotation) .. '\n'
@@ -217,14 +224,14 @@ local function make_script_body(script)
     body = body .. '  msg.post(\'.\', hash \'init_area\', {\n   '
 
     for _, area in ipairs(script.properties.areas) do
-      local vector_bodies = { }
+      local vector_bodies = {}
 
       for _, vector in ipairs(area) do
         local vector_body = make_vector_body(vector)
-        table.insert(vector_bodies, vector_body)
+        table_insert(vector_bodies, vector_body)
       end
 
-      body = body .. ' {\n      ' .. table.concat(vector_bodies, ',\n      ') .. '\n    },'
+      body = body .. ' {\n      ' .. table_concat(vector_bodies, ',\n      ') .. '\n    },'
     end
 
     body = body .. '\n  })\n'
@@ -238,16 +245,16 @@ end
 -- Properties
 
 local function make_property_bodies(property_template, overrides)
-  local property_bodies = { }
+  local property_bodies = {}
 
-  for property, value in pairs(overrides or { }) do
+  for property, value in pairs(overrides or {}) do
     local raw_type, raw_value = make_raw_property(property, value)
 
     local property_body = property_template:gsub('_PROPERTY_', property)
     property_body = property_body:gsub('_VALUE_', raw_value)
     property_body = property_body:gsub('_TYPE_', raw_type)
 
-    table.insert(property_bodies, property_body)
+    table_insert(property_bodies, property_body)
   end
 
   return property_bodies
@@ -257,7 +264,7 @@ end
 -- Collection
 
 local function object_to_bodies(object, instance_bodies, embedded_instance_bodies, parent_children_ids)
-  for id, child in pairs(object.gameobjects or { }) do
+  for id, child in pairs(object.gameobjects or {}) do
     if type(child) == 'table' then
       local instance_body
       local is_embedded = child.go == nil
@@ -270,7 +277,7 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
       end
 
       if parent_children_ids then
-        table.insert(parent_children_ids, id)
+        table_insert(parent_children_ids, id)
       end
 
       -- Set identifier
@@ -279,7 +286,7 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
 
       -- Set position
 
-      local position = child.position or { }
+      local position = child.position or {}
       instance_body = instance_body:gsub('_POSITION_X_', make_float_body(position.x))
       instance_body = instance_body:gsub('_POSITION_Y_', make_float_body(position.y))
       instance_body = instance_body:gsub('_POSITION_Z_', make_float_body(position.z))
@@ -296,25 +303,25 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
 
       if is_embedded then
         local data = '""\n'
-        local components = { }
+        local components = {}
 
         -- Set components
 
-        for component_id, component_path in pairs(child.components or { }) do
+        for component_id, component_path in pairs(child.components or {}) do
           local component_body = templates.component:gsub('_ID_', component_id)
           component_body = component_body:gsub('_PATH_', component_path)
 
           -- Set component overrides
 
-          local overrides = (child.overrides or { })[component_id]
+          local overrides = (child.overrides or {})[component_id]
           local component_property_bodies = make_property_bodies(templates.component_property, overrides)
-          component_body = component_body:gsub('_COMPONENT_PROPERTIES_\n', table.concat(component_property_bodies))
+          component_body = component_body:gsub('_COMPONENT_PROPERTIES_\n', table_concat(component_property_bodies))
 
-          table.insert(components, component_body)
+          table_insert(components, component_body)
         end
 
         if #components > 0 then
-          data = table.concat(components)
+          data = table_concat(components)
           data = #components > 0 and data:sub(3) or data
         end
 
@@ -322,10 +329,11 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
 
         -- Set children
 
-        local children_ids = { }
-        instance_bodies, embedded_instance_bodies = object_to_bodies(child, instance_bodies, embedded_instance_bodies, children_ids)
+        local children_ids = {}
+        instance_bodies, embedded_instance_bodies = object_to_bodies(child, instance_bodies, embedded_instance_bodies,
+          children_ids)
 
-        table.sort(children_ids)
+        table_sort(children_ids)
         local children_body = ''
 
         for _, child_id in ipairs(children_ids) do
@@ -335,24 +343,24 @@ local function object_to_bodies(object, instance_bodies, embedded_instance_bodie
 
         instance_body = instance_body:gsub('_CHILDREN_\n', children_body)
 
-        table.insert(embedded_instance_bodies, instance_body)
+        table_insert(embedded_instance_bodies, instance_body)
       else
-
         -- Set instance overrides
 
-        local instance_properties_bodies = { }
+        local instance_properties_bodies = {}
 
-        for component_id, overrides in pairs(child.overrides or { }) do
+        for component_id, overrides in pairs(child.overrides or {}) do
           local instance_properties_body = templates.instance_properties:gsub('_ID_', component_id)
           local instance_property_bodies = make_property_bodies(templates.instance_property, overrides)
 
-          instance_properties_body = instance_properties_body:gsub('_PROPERTIES_\n', table.concat(instance_property_bodies))
-          table.insert(instance_properties_bodies, instance_properties_body)
+          instance_properties_body = instance_properties_body:gsub('_PROPERTIES_\n',
+            table_concat(instance_property_bodies))
+          table_insert(instance_properties_bodies, instance_properties_body)
         end
 
-        instance_body = instance_body:gsub('_INSTANCE_PROPERTIES_\n', table.concat(instance_properties_bodies))
+        instance_body = instance_body:gsub('_INSTANCE_PROPERTIES_\n', table_concat(instance_properties_bodies))
 
-        table.insert(instance_bodies, instance_body)
+        table_insert(instance_bodies, instance_body)
       end
     end
   end
@@ -364,10 +372,10 @@ local function make_collection_body(collection)
   local body = templates.collection
   body = body:gsub('_ID_', config.map_name)
 
-  local instance_bodies, embedded_instance_bodies = object_to_bodies(collection, { }, { })
+  local instance_bodies, embedded_instance_bodies = object_to_bodies(collection, {}, {})
 
-  body = body:gsub('_EMBEDDED_INSTANCES_\n', table.concat(embedded_instance_bodies))
-  body = body:gsub('_INSTANCES_\n', table.concat(instance_bodies))
+  body = body:gsub('_EMBEDDED_INSTANCES_\n', table_concat(embedded_instance_bodies))
+  body = body:gsub('_INSTANCES_\n', table_concat(instance_bodies))
 
   return body
 end
@@ -376,7 +384,7 @@ end
 -- Public
 
 function builder.build(instances)
-  local files = { }
+  local files = {}
 
   local component_builders = {
     buffer = make_buffer_body,
@@ -393,11 +401,11 @@ function builder.build(instances)
         path = file_path,
         content = component_builders[component_type](instance)
       }
-      table.insert(files, file)
+      table_insert(files, file)
     end
   end
 
-  table.sort(files, function(a, b) return a.path > b.path end)
+  table_sort(files, function(a, b) return a.path > b.path end)
 
   return files
 end

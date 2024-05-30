@@ -10,8 +10,8 @@ assert(arg[1], 'A relative path to the map folder as the 1th argument is require
 assert(arg[2], 'A map name as the 2th argument is required.')
 
 local trenchfold = require 'trenchfold.trenchfold'
-local config = require 'trenchfold.config'
-local utils = require 'trenchfold.utils'
+local config = require 'trenchfold.utils.config'
+local utils = require 'trenchfold.utils.utils'
 
 local folder_separator = package.config:sub(1, 1)
 config.init(folder_separator, arg[1], arg[2])
@@ -31,4 +31,4 @@ for _, folder in ipairs(folder_to_clean) do
 end
 print('')
 
-trenchfold.direct_convert()
+trenchfold.convert()

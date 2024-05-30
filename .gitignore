@@ -21,9 +21,9 @@ log.txt
 **/autosave/*.map
 
 # Generated Map
-assets/maps/**/buffer
-assets/maps/**/collisionobject
-assets/maps/**/convexshape
-assets/maps/**/mesh
-assets/maps/**/script
-assets/maps/**/*.collection
+example/maps/**/buffer
+example/maps/**/collisionobject
+example/maps/**/convexshape
+example/maps/**/mesh
+example/maps/**/script
+example/maps/**/*.collection

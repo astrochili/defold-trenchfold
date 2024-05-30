@@ -43,27 +43,18 @@ TrenchBroom was originally created to design Quake-format levels, but thanks to 
 
 ## Running the Example
 
-To run the example project, you first need to run two editor extension functions on a map file provided, according the [Export and Import](#export-and-import) part.
+To run the example project, you first need to import the example map.
 
-With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchfold/blob/master/assets/maps/level/level.map) file then click on `Convert Map to Collection`. This will create a variety of folders and files next to the .map file. You can now build and run the example.
+With the project open in Defold, right click on the [level.map](https://github.com/astrochili/defold-trenchfold/blob/master/assets/maps/level/level.map) file then click on `Convert Map to Collection`. This will create a variety of folders and files next to the `.map` file. You can now build and run the example.
 
 ## Install
 
 1. Add link to the zip-archive of the latest version of [defold-trenchfold](https://github.com/astrochili/defold-trenchfold/releases) to your Defold project as [dependency](http://www.defold.com/manuals/libraries/).
-2. Copy the `trenchfold/games/Defold` folder according [this instruction](https://trenchbroom.github.io/manual/latest/#game_configuration_files) to TrenchBroom user data folder.
-3. Place your texture packs at path `assets/textures` to use them in TrenchBroom.
-4. Set your game project path as the game path in TrenchBroom preferences when creating the first map.
-5. Setup `textel_size` and `material` in the [worldspawn](#worldspawn) entity.
+2. Copy the `trenchfold/assets/trenchbroom/games/Defold` folder according [this instruction](https://trenchbroom.github.io/manual/latest/#game_configuration_files) to TrenchBroom user data folder.
+3. Set your game project path as the game path in TrenchBroom preferences when creating the first map.
+4. Setup `textel_size` and `material` in the [worldspawn](#worldspawn) entity.
 
-## Export and Import
-
-### Export
-
-Before import you need to export `.obj` file from TrenchBroom by menu `File / Export / Wavefront OBJ`. The importing script uses `.obj` data to parse vertices, so it must be done every time the geometry is changed.
-
-It would be possible to skip this step by solving the issue [#1](https://github.com/astrochili/defold-trenchfold/issues/1).
-
-### Import
+## Import
 
 #### Editor Script
 
@@ -73,7 +64,13 @@ Find your `.map` file in the resources pane of the editor and right click on it 
 
 There is also the `trenchfold/cli.lua` module to run the import script outside the editor. Just pass it two arguments - `relative/map_folder` and `map_name`.
 
-For example, there is [`.vscode/launch.json`](.vscode/launch.json) to run `trenchfold/cli.lua` with the `level` map in VS Code. You can try to run it by installing [Defold Kit](https://marketplace.visualstudio.com/items?itemName=astronachos.defold) or just [local-lua-debugger](https://marketplace.visualstudio.com/items?itemName=tomblind.local-lua-debugger-vscode).
+#### VS Code
+
+There is a working example of launch configuration in [`.vscode/launch.json`](.vscode/launch.json). It launches `trenchfold/cli.lua` with the `/example/maps/level` map by using [local-lua-debugger](https://marketplace.visualstudio.com/items?itemName=tomblind.local-lua-debugger-vscode). Requires Lua or LuaJIT to be installed on your computer.
+
+#### TrenchBroom
+
+You can create a [compilation profile](https://iroom.github.io/manual/latest/#compiling_maps) inside TrenchBroom with the `Run Tool` step to run [cli.lua](#lua-module). Requires Lua or LuaJIT to be installed on your computer.
 
 ## Textures
 
@@ -81,23 +78,23 @@ For example, there is [`.vscode/launch.json`](.vscode/launch.json) to run `trenc
 
 The game configuration includes marking textures at `flags/textures`. They are handled by the exporting script to provide specific behaviour to the faces without normal textures.
 
-### unused
+#### unused
 
 This face will be skipped when exporting.
 
 Use it to remove useless faces from the geometry.
 
-### clip
+#### clip
 
 Creates a collision object without texture.
 
 Use it to create invisible walls and useful collision geometry.
 
-### trigger
+#### trigger
 
 Creates a trigger collision object.
 
-### area
+#### area
 
 Doesn't create collision objects but its vertices positions will be sent to the object with the `init_area` message.
 
@@ -107,13 +104,13 @@ Use it to process the area programmaticaly.
 
 There are few content flags in the face properties.
 
-### ghost
+#### ghost
 
 The face isn't solid and doesn't generate a collision object vertices.
 
 Use it on objects that can be passed through or that the player will never reach.
 
-### separated
+#### separated
 
 The face generates a separate plane collision object.
 
@@ -125,7 +122,7 @@ A rare use case is when you have a wall corner with two solid faces and you don'
 
 There are brush entities and point entities. The difference is that a brush entity contains geometry brushes, while the point entity has only an origin position and rotation.
 
-### worldspawn
+#### worldspawn
 
 The default entity for all the geometry outside of the other entities. Also has some general settings of exporting.
 
@@ -134,7 +131,7 @@ The default entity for all the geometry outside of the other entities. Also has 
 - `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties used by default.
 
-### static*
+#### static*
 
 A brush entity with the static collision type. The only reason to use it is to attach components and set properties because the `worldspawn` is static by default. To use [areas](#area) or destroy parts of the level, e.g.
 
@@ -145,7 +142,7 @@ A brush entity with the static collision type. The only reason to use it is to a
 - `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to static collision type.
 
-### trigger*
+#### trigger*
 
 To be fair, triggers are created by the [trigger](#trigger) texture, not the entity. But you also need to put scripts and parameters on this trigger, so which is what this entity is for.
 
@@ -156,7 +153,7 @@ If you place brushes with normal textures to this entity they also become trigge
 - `#component_id.property` — the script component property override.
 - `physics_*` — collision object properties related to trigger collision type.
 
-### kinematic*
+#### kinematic*
 
 A brush entity with the kinematic collision type. Use it for moving platforms or sliding doors, for example.
 
@@ -167,7 +164,7 @@ A brush entity with the kinematic collision type. Use it for moving platforms or
 - `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to kinematic collision type.
 
-### dynamic*
+#### dynamic*
 
 A brush entity with dthe ynamic collision type. This could be, for example, a crate that the player can move.
 
@@ -178,7 +175,7 @@ A brush entity with dthe ynamic collision type. This could be, for example, a cr
 - `textureN` — path to the texture where `N` is number from `1` to `7`. See [texture path patterns](#texture-path-patterns).
 - `physics_*` — collision object properties related to dynamic collision type.
 
-### go
+#### go
 
 This is a point entity to add a game object without meshes and collision objects. You can attach any file components to it or replace it with you `.go` file.
 
@@ -190,7 +187,7 @@ This is a point entity to add a game object without meshes and collision objects
 - `#component_id` — the relative path to the file component that will be attached to this game object as `component_id`. Ignored if the `go` property exists.
 - `#component_id.property` — the script component property override.
 
-### illumination, light_point, light_spot
+#### illumination, light_point, light_spot
 
 These are helpers for placing 💡 [Illumination](https://github.com/astrochili/defold-illumination) objects on the map. Don't forget to fill the `go` property with default value.
 
@@ -212,27 +209,27 @@ All the custom properties will be a part of the script component with the `prope
 go.get('#properties', 'property')
 ```
 
-### bool
+#### bool
 
 The values `true` and `false` are converted to boolean.
 
-### number
+#### number
 
 The value which can be handled with `tonumber()` is converted to number.
 
 If the number is flags value then you can parse it with `utils.flags_from_integer(value)` from the `trenchfold/utils.lua` module.
 
-### vectors
+#### vectors
 
 - Value `x y` is converted to `math.vector3(x, y, 0)`.
 - Value `x y z` is converted to `math.vector3(x, y, w)`.
 - Value `x y z w` is converted to `math.vector4(x, y, z, w)`.
 
-### *url
+#### *url
 
 Property ending with `url` is converted to `msg.url('value')`.
 
-### hash
+#### hash
 
 Any other string property is converted to `hash 'value'`.
 
