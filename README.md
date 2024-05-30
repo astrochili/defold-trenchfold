@@ -217,7 +217,7 @@ The values `true` and `false` are converted to boolean.
 
 The value which can be handled with `tonumber()` is converted to number.
 
-If the number is flags value then you can parse it with `utils.flags_from_integer(value)` from the `trenchfold/utils.lua` module.
+If the number is flags value then you can parse it with `utils.flags_from_integer(value)` from the `trenchfold/utils/utils.lua` module.
 
 ### vectors
 
