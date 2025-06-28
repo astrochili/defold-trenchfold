@@ -173,7 +173,11 @@ local function make_collisionobject_body(collision_object)
   body = body .. 'friction: ' .. make_float_body(collision_object.friction) .. '\n'
   body = body .. 'restitution: ' .. make_float_body(collision_object.restitution) .. '\n'
   body = body .. 'group: "' .. collision_object.group .. '"\n'
-  body = body .. 'mask: "' .. collision_object.mask .. '"\n'
+
+  for mask in collision_object.mask:gmatch('[^,%s]+') do
+    body = body .. 'mask: "' .. mask .. '"\n'
+  end
+
   body = body .. 'linear_damping: ' .. make_float_body(collision_object.linear_damping) .. '\n'
   body = body .. 'angular_damping: ' .. make_float_body(collision_object.angular_damping) .. '\n'
   body = body .. 'locked_rotation: ' .. tostring(collision_object.locked_rotation) .. '\n'

@@ -8,7 +8,7 @@
             "verbose": false,
             "internalConsoleOptions": "openOnSessionStart",
             "program": {
-                "lua": "lua5.1",
+                "lua": "lua",
                 "file": "trenchfold/cli.lua"
             },
             "args": [
