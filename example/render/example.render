@@ -1,1 +1,1 @@
-script: "/render/example.render_script"
+script: "/example/render/example.render_script"

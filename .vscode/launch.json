@@ -9,9 +9,12 @@
             "internalConsoleOptions": "openOnSessionStart",
             "program": {
                 "lua": "lua5.1",
-                "file": "trenchfold/cli.lua",
+                "file": "trenchfold/cli.lua"
             },
-            "args": ["example/maps/level", "level"]
+            "args": [
+                "example/maps/level",
+                "level"
+            ]
         },
         {
             "name": "Defold Kit",

@@ -3,6 +3,7 @@
 Thumbs.db
 
 # Defold
+/.editor_settings
 /.internal
 /build
 /bundle

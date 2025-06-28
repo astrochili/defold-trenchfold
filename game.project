@@ -10,7 +10,7 @@ dependencies#2 = https://github.com/astrochili/defold-kinematic-walker/archive/r
 
 [bootstrap]
 main_collection = /example/main.collectionc
-render = /render/example.renderc
+render = /example/render/example.renderc
 
 [input]
 game_binding = /builtins/input/all.input_bindingc
