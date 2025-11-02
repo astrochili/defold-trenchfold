@@ -70,7 +70,7 @@ There is a working example of launch configuration in [`.vscode/launch.json`](.v
 
 ### TrenchBroom
 
-You can create a [compilation profile](https://iroom.github.io/manual/latest/#compiling_maps) inside TrenchBroom with the `Run Tool` step to run [cli.lua](#lua-module). Requires Lua or LuaJIT to be installed on your computer.
+You can create a [compilation profile](https://iroom.github.io/manual/latest/#compiling_maps) inside TrenchBroom with the `Run Tool` step to run [trenchfold/cli.lua](/trenchfold/cli.lua). Requires Lua or LuaJIT to be installed on your computer.
 
 ## Textures
 
